@@ -1,6 +1,7 @@
 import {ChakraProvider} from "@chakra-ui/react";
 import {RouterProvider} from "react-router";
 import {createBrowserRouter} from "react-router-dom";
+import {QueryClient, QueryClientProvider} from "react-query";
 
 import AllMoviesPage from "../pages/AllMoviesPage";
 import CollectionsPage from "../pages/CollectionsPage";
@@ -21,11 +22,15 @@ const router = createBrowserRouter([
 	},
 ]);
 
+const queryClient = new QueryClient();
+
 function App() {
 	return (
-		<ChakraProvider>
-			<RouterProvider router={router} />
-		</ChakraProvider>
+		<QueryClientProvider client={queryClient}>
+			<ChakraProvider>
+				<RouterProvider router={router} />
+			</ChakraProvider>
+		</QueryClientProvider>
 	);
 }
 
