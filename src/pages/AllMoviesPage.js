@@ -9,7 +9,7 @@ import SearchBar from "../components/SearchBar";
 import MovieCard from "../components/MovieCard";
 
 const AllMoviesPage = () => {
-	const {isLoading, error, movies, handlePaginate} = useGetPlayingNow();
+	const {isLoading, error, movies, handlePaginate, data} = useGetPlayingNow();
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -19,6 +19,7 @@ const AllMoviesPage = () => {
 				<MovieCard
 					key={a.id}
 					movie={a}
+					index={data.results.indexOf(a)}
 				/>
 			);
 		});
@@ -61,7 +62,7 @@ const AllMoviesPage = () => {
 					>
 						{renderMovies(movies)}
 					</Box>
-					{movies.length < 500 && (
+					{movies.length < 100 && (
 						<Button
 							display="block"
 							mx="auto"

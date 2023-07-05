@@ -50,7 +50,7 @@ const useGetPlayingNow = () => {
 		);
 	}
 
-	return {isLoading, error, movies, handlePaginate};
+	return {isLoading, error, movies, handlePaginate, data};
 };
 
 export default useGetPlayingNow;

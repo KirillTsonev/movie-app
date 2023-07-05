@@ -22,7 +22,7 @@ const NavBar = () => {
 				to="/"
 				w="40%"
 				bg="#00c0f7"
-				transition="all .4s"
+				transition="background transform .4s"
 				_hover={{
 					background: "#17b824",
 					transform: "translateX(5px) translateY(-5px)",
@@ -41,7 +41,7 @@ const NavBar = () => {
 				to="/collections"
 				w="40%"
 				bg="#00c0f7"
-				transition="all .4s"
+				transition="background transform .4s"
 				_hover={{
 					background: "#17b824",
 					transform: "translateX(5px) translateY(-5px)",

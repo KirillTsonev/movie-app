@@ -7,7 +7,7 @@ const ThemeSwitch = () => {
 		<Button
 			bg="#00c0f7"
 			onClick={toggleColorMode}
-			transition="all .4s"
+			transition="background transform .4s"
 			_hover={{
 				background: "#17b824",
 				transform: "translateX(5px) translateY(-5px)",
