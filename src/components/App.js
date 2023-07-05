@@ -6,6 +6,7 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import AllMoviesPage from "../pages/AllMoviesPage";
 import CollectionsPage from "../pages/CollectionsPage";
 import Error404Page from "../pages/Error404Page";
+import {MoviesProvider} from "../context/moviesContext";
 
 const router = createBrowserRouter([
 	{
@@ -28,7 +29,9 @@ function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ChakraProvider>
-				<RouterProvider router={router} />
+				<MoviesProvider>
+					<RouterProvider router={router} />
+				</MoviesProvider>
 			</ChakraProvider>
 		</QueryClientProvider>
 	);

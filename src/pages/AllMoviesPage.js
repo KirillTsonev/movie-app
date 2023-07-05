@@ -9,7 +9,7 @@ import SearchBar from "../components/SearchBar";
 import MovieCard from "../components/MovieCard";
 
 const AllMoviesPage = () => {
-	const {isLoading, error, movies, handlePaginate, data} = useGetPlayingNow();
+	const {isLoading, error, movies, handlePaginate, data, setMovies} = useGetPlayingNow();
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -34,7 +34,7 @@ const AllMoviesPage = () => {
 			mx="auto"
 		>
 			<NavBar />
-			<SearchBar />
+			<SearchBar setMovies={setMovies} />
 			{isLoading ? (
 				<Box
 					display="flex"

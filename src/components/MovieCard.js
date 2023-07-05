@@ -7,8 +7,6 @@ const MovieCard = ({movie, index}) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	console.log("first");
-
 	const {isOpen, onOpen} = useDisclosure();
 
 	return (

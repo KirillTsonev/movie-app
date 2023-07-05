@@ -1,11 +1,14 @@
 import {useQuery} from "react-query";
+import {useContext} from "react";
 
+import {MoviesContext} from "../context/moviesContext";
 import {apiAuthorization} from "../constants";
 import {useRef, useState, useEffect} from "react";
 
 const useGetPlayingNow = () => {
-	const [movies, setMovies] = useState([]);
 	const [paginationNum, setPaginationNum] = useState(10);
+
+	const {movies, setMovies} = useContext(MoviesContext);
 
 	const paginationLinkNum = useRef(1);
 
@@ -50,7 +53,7 @@ const useGetPlayingNow = () => {
 		);
 	}
 
-	return {isLoading, error, movies, handlePaginate, data};
+	return {isLoading, error, movies, handlePaginate, data, setMovies};
 };
 
 export default useGetPlayingNow;
