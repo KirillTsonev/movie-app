@@ -1,13 +1,18 @@
 import React, {useContext} from "react";
-import {Box, Input, Button, NumberInput, NumberInputField, Select} from "@chakra-ui/react";
+import {Box, Input, Button, NumberInput, NumberInputField, Checkbox} from "@chakra-ui/react";
 
 import useSearchBarComplex from "../api/useSearchBarComplex";
+import useFetchGenres from "../api/useFetchGenres";
+import useCheckBoxes from "../api/useCheckBoxes";
+
 import {MoviesContext} from "../context/moviesContext";
 
 const SearchBarComplex = ({setSearched}) => {
-	const {year, setYear, cast, setCast, refetchSearchComplex} = useSearchBarComplex();
+	const {year, setYear, cast, setCast, refetchSearchComplex, setSelectedGenresApi} = useSearchBarComplex();
 
 	const {setResults} = useContext(MoviesContext);
+	const {dataGenres} = useFetchGenres();
+	const {showGenres, setShowGenres, handleCheckGenre, handleGenres} = useCheckBoxes(setSelectedGenresApi);
 
 	function handleSearch(e) {
 		e.preventDefault();
@@ -31,28 +36,61 @@ const SearchBarComplex = ({setSearched}) => {
 				display="flex"
 				justifyContent="space-around"
 			>
-				{/* <Input
-					placeholder="Search by genres, comma separated"
-					_placeholder={{opacity: 1, color: "gray.500"}}
-					name="genres"
-					w="30%"
-					px="10px"
-					border="2px solid #00c0f7"
-					// value={searchString}
-					// onChange={(e) => setSearchString(e.target.value)}
-				/> */}
-				<Select
-					placeholder="Select genre"
-					name="genres"
-					w="30%"
-					px="10px"
-					border="2px solid #00c0f7"
-					variant="filled"
+				<Box
+					width="30%"
+					position="relative"
 				>
-					<option value="option1">Option 1</option>
-					<option value="option2">Option 2</option>
-					<option value="option3">Option 3</option>
-				</Select>
+					<Button
+						variant="ghost"
+						w="100%"
+						onClick={() => setShowGenres(!showGenres)}
+					>
+						Choose genres
+					</Button>
+					<Box
+						w="500px"
+						textAlign="center"
+						position="absolute"
+						border="2px solid"
+						borderRadius="10px"
+						color="var(--chakra-colors-chakra-body-text)"
+						bg="var(--chakra-colors-chakra-body-bg)"
+						px="10px"
+						display={showGenres ? "block" : "none"}
+						top="50px"
+					>
+						<Box>
+							{dataGenres &&
+								dataGenres.genres.map((a) => (
+									<Checkbox
+										key={a.id}
+										value={a.id}
+										mr="10px"
+										mt="10px"
+										colorScheme="green"
+										onChange={(e) => handleCheckGenre(e)}
+									>
+										{a.name}
+									</Checkbox>
+								))}
+						</Box>
+						<Button
+							m="10px"
+							ml="auto"
+							display="block"
+							bg="#00c0f7"
+							_hover={{
+								background: "#17b824",
+								transform: "translateX(5px) translateY(-5px)",
+								boxShadow:
+									"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
+							}}
+							onClick={handleGenres}
+						>
+							Save genres
+						</Button>
+					</Box>
+				</Box>
 				<Input
 					placeholder="Search by cast, comma separated"
 					_placeholder={{opacity: 1, color: "gray.500"}}

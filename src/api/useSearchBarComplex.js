@@ -7,8 +7,7 @@ import {MoviesContext} from "../context/moviesContext";
 const useSearchBarComplex = () => {
 	const [cast, setCast] = useState("");
 	const [year, setYear] = useState(0);
-	const [genres, setGenres] = useState("");
-	const [selectedGenre, setSelectedGenre] = useState("");
+	const [selectedGenresApi, setSelectedGenresApi] = useState("");
 
 	const {setData, results} = useContext(MoviesContext);
 
@@ -81,8 +80,8 @@ const useSearchBarComplex = () => {
 			link += `&with_cast=${data.join(",")}`;
 		}
 
-		if (genres) {
-			link += `&with_genres=${genres}`;
+		if (selectedGenresApi) {
+			link += `&with_genres=${selectedGenresApi.join(",")}`;
 		}
 
 		return fetch(link, options);
@@ -96,6 +95,7 @@ const useSearchBarComplex = () => {
 		setYear,
 		cast,
 		setCast,
+		setSelectedGenresApi,
 	};
 };
 
