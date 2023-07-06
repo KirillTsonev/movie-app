@@ -7,31 +7,27 @@ import {MoviesContext} from "../context/moviesContext";
 const useSearchBarSimple = () => {
 	const [searchString, setSearchString] = useState("");
 
-	const {setMovies} = useContext(MoviesContext);
+	const {setData, results} = useContext(MoviesContext);
 
 	const {
-		isLoading: isLoadingSearch,
-		error: errorSearch,
-		data: dataSearch,
-		refetch: refetchSearch,
+		isLoading: isLoadingSearchSimple,
+		error: errorSearchSimple,
+		data: dataSearchSimple,
+		refetch: refetchSearchSimple,
 	} = useQuery({
 		queryKey: ["simpleSearch"],
-		queryFn: () => fetchSearch().then((res) => res.json()),
+		queryFn: () => fetchSimpleSearch().then((res) => res.json()),
 		enabled: false,
 	});
 
 	useEffect(() => {
-		if (dataSearch?.results.length) {
-			setMovies(dataSearch.results.slice(0, 10));
+		if (dataSearchSimple && results === "simple") {
+			setData(dataSearchSimple.results);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataSearch]);
+	}, [dataSearchSimple]);
 
-	function paginateSearch() {
-		setMovies(dataSearch.results.slice(0, 20));
-	}
-
-	function fetchSearch() {
+	function fetchSimpleSearch() {
 		const options = {
 			method: "GET",
 			headers: {
@@ -48,7 +44,13 @@ const useSearchBarSimple = () => {
 		);
 	}
 
-	return {refetchSearch, isLoadingSearch, errorSearch, searchString, setSearchString, paginateSearch};
+	return {
+		refetchSearchSimple,
+		isLoadingSearchSimple,
+		errorSearchSimple,
+		searchString,
+		setSearchString,
+	};
 };
 
 export default useSearchBarSimple;

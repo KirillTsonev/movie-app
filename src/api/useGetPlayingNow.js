@@ -1,49 +1,31 @@
 import {useQuery} from "react-query";
 import {useContext} from "react";
+import {useEffect} from "react";
 
 import {MoviesContext} from "../context/moviesContext";
 import {apiAuthorization} from "../constants";
-import {useRef, useState, useEffect} from "react";
 
 const useGetPlayingNow = () => {
-	const [paginationNum, setPaginationNum] = useState(10);
-
-	const {movies, setMovies} = useContext(MoviesContext);
-
-	const paginationLinkNum = useRef(1);
+	const {setData, paginationIndex, results} = useContext(MoviesContext);
 
 	const {
 		isLoading: isLoadingPlaying,
 		error: errorPlaying,
 		data: dataPlaying,
-		refetch: refetchPlaying,
 	} = useQuery({
-		queryKey: ["playingNow"],
-		queryFn: () => fetchMovies().then((res) => res.json()),
+		queryKey: ["playingNow", paginationIndex],
+		queryFn: () => fetchMovies(paginationIndex).then((res) => res.json()),
+		keepPreviousData: true,
 	});
 
 	useEffect(() => {
-		if (dataPlaying?.results.length) {
-			if (paginationNum === 10) {
-				setMovies(dataPlaying.results.slice(0, 10));
-			} else {
-				setMovies([...new Set([...movies, ...dataPlaying.results])].slice(0, paginationNum));
-			}
+		if (dataPlaying && results === "all") {
+			setData(dataPlaying.results);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataPlaying, paginationNum]);
+	}, [dataPlaying]);
 
-	function paginatePlaying() {
-		if ((movies.length / 10) % 2 === 0) {
-			paginationLinkNum.current++;
-
-			refetchPlaying();
-		}
-
-		setPaginationNum(paginationNum + 10);
-	}
-
-	function fetchMovies() {
+	function fetchMovies(num) {
 		const options = {
 			method: "GET",
 			headers: {
@@ -52,13 +34,10 @@ const useGetPlayingNow = () => {
 			},
 		};
 
-		return fetch(
-			`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${paginationLinkNum.current}`,
-			options
-		);
+		return fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=` + num, options);
 	}
 
-	return {isLoadingPlaying, errorPlaying, paginatePlaying, dataPlaying, movies, refetchPlaying};
+	return {isLoadingPlaying, errorPlaying, dataPlaying};
 };
 
 export default useGetPlayingNow;

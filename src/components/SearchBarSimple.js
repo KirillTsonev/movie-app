@@ -1,17 +1,24 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Input, Button, Box} from "@chakra-ui/react";
 
 import useSearchBarSimple from "../api/useSearchBarSimple";
+import {MoviesContext} from "../context/moviesContext";
 
 const SearchBarSimple = ({setSearched}) => {
-	const {refetchSearch, searchString, setSearchString} = useSearchBarSimple();
+	const {refetchSearchSimple, searchString, setSearchString} = useSearchBarSimple();
+
+	const {setResults} = useContext(MoviesContext);
 
 	function handleSearch(e) {
 		e.preventDefault();
 
-		setSearched(true);
+		if (searchString) {
+			setSearched(true);
 
-		refetchSearch();
+			setResults("simple");
+
+			refetchSearchSimple();
+		}
 	}
 
 	return (
@@ -22,8 +29,10 @@ const SearchBarSimple = ({setSearched}) => {
 			onSubmit={(e) => handleSearch(e)}
 		>
 			<Input
-				placeholder="Search movies"
-				name="search"
+				placeholder="Search movies by title"
+				_placeholder={{opacity: 1, color: "gray.500"}}
+				name="title"
+				border="2px solid #00c0f7"
 				value={searchString}
 				onChange={(e) => setSearchString(e.target.value)}
 			/>

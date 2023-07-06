@@ -4,6 +4,7 @@ import {SpinnerDotted} from "spinners-react";
 
 import useGetPlayingNow from "../api/useGetPlayingNow";
 import useSearchBarSimple from "../api/useSearchBarSimple";
+import useSearchBarComplex from "../api/useSearchBarComplex";
 
 import {MoviesContext} from "../context/moviesContext";
 
@@ -16,10 +17,11 @@ const AllMoviesPage = () => {
 	const [complexSearch, setComplexSearch] = useState(false);
 	const [searched, setSearched] = useState(false);
 
-	const {isLoadingPlaying, errorPlaying, paginatePlaying, dataPlaying} = useGetPlayingNow();
-	const {isLoadingSearch, errorSearch, paginateSearch} = useSearchBarSimple();
+	const {isLoadingPlaying, errorPlaying, dataPlaying} = useGetPlayingNow();
+	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
+	const {isLoadingSearchComplex, errorSearchComplex} = useSearchBarComplex();
 
-	const {movies} = useContext(MoviesContext);
+	const {movies, paginate} = useContext(MoviesContext);
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -66,7 +68,7 @@ const AllMoviesPage = () => {
 					{complexSearch ? "Simple search" : "Complex search"}
 				</Button>
 			</Box>
-			{isLoadingPlaying || isLoadingSearch ? (
+			{isLoadingPlaying || isLoadingSearchSimple || isLoadingSearchComplex ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -74,7 +76,7 @@ const AllMoviesPage = () => {
 				>
 					<SpinnerDotted size={"50%"} />
 				</Box>
-			) : errorPlaying || errorSearch ? (
+			) : errorPlaying || errorSearchSimple || errorSearchComplex ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"
@@ -106,7 +108,7 @@ const AllMoviesPage = () => {
 									"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
 							}}
 							mt="20px"
-							onClick={searched ? paginateSearch : paginatePlaying}
+							onClick={paginate}
 						>
 							Load more movies
 						</Button>

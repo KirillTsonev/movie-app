@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import {NavLink} from "react-router-dom";
 import {Box, Button} from "@chakra-ui/react";
 
-import useSearchBarSimple from "../api/useSearchBarSimple";
-
 import ThemeSwitch from "./ThemeSwitch";
+import {MoviesContext} from "../context/moviesContext";
 
 const NavBar = () => {
-	const {refetchSearch} = useSearchBarSimple();
+	const {setResults} = useContext(MoviesContext);
 
 	return (
 		<Box
@@ -55,7 +54,7 @@ const NavBar = () => {
 					fontWeight: "bold",
 					textTransform: "uppercase",
 				}}
-				onClick={refetchSearch}
+				onClick={() => setResults("all")}
 			>
 				Your collections
 			</Button>
