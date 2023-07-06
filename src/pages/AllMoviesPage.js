@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useState, useContext} from "react";
 import {Box, Button, Text} from "@chakra-ui/react";
 import {SpinnerDotted} from "spinners-react";
 
 import useGetPlayingNow from "../api/useGetPlayingNow";
+import useSearchBarSimple from "../api/useSearchBarSimple";
+
+import {MoviesContext} from "../context/moviesContext";
 
 import NavBar from "../components/NavBar";
-import SearchBar from "../components/SearchBar";
+import SearchBarSimple from "../components/SearchBarSimple";
+import SearchBarComplex from "../components/SearchBarComplex";
 import MovieCard from "../components/MovieCard";
 
 const AllMoviesPage = () => {
-	const {isLoading, error, movies, handlePaginate, data, setMovies} = useGetPlayingNow();
+	const [complexSearch, setComplexSearch] = useState(false);
+	const [searched, setSearched] = useState(false);
+
+	const {isLoadingPlaying, errorPlaying, paginatePlaying, dataPlaying} = useGetPlayingNow();
+	const {isLoadingSearch, errorSearch, paginateSearch} = useSearchBarSimple();
+
+	const {movies} = useContext(MoviesContext);
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -19,7 +29,7 @@ const AllMoviesPage = () => {
 				<MovieCard
 					key={a.id}
 					movie={a}
-					index={data.results.indexOf(a)}
+					index={dataPlaying.results.indexOf(a)}
 				/>
 			);
 		});
@@ -34,8 +44,29 @@ const AllMoviesPage = () => {
 			mx="auto"
 		>
 			<NavBar />
-			<SearchBar setMovies={setMovies} />
-			{isLoading ? (
+			<Box display="flex">
+				{complexSearch ? (
+					<SearchBarComplex setSearched={setSearched} />
+				) : (
+					<SearchBarSimple setSearched={setSearched} />
+				)}
+				<Button
+					mx="auto"
+					bg="#00c0f7"
+					w="145px"
+					transition="background transform .4s"
+					_hover={{
+						background: "#17b824",
+						transform: "translateX(5px) translateY(-5px)",
+						boxShadow:
+							"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
+					}}
+					onClick={() => setComplexSearch(!complexSearch)}
+				>
+					{complexSearch ? "Simple search" : "Complex search"}
+				</Button>
+			</Box>
+			{isLoadingPlaying || isLoadingSearch ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -43,7 +74,7 @@ const AllMoviesPage = () => {
 				>
 					<SpinnerDotted size={"50%"} />
 				</Box>
-			) : error ? (
+			) : errorPlaying || errorSearch ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"
@@ -62,12 +93,12 @@ const AllMoviesPage = () => {
 					>
 						{renderMovies(movies)}
 					</Box>
-					{movies.length < 100 && (
+					{(!searched && movies.length < 100) || (searched && movies.length === 10) ? (
 						<Button
 							display="block"
 							mx="auto"
 							bg="#00c0f7"
-							transition="all .4s"
+							transition="background transform .4s"
 							_hover={{
 								background: "#17b824",
 								transform: "translateX(5px) translateY(-5px)",
@@ -75,11 +106,11 @@ const AllMoviesPage = () => {
 									"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
 							}}
 							mt="20px"
-							onClick={() => handlePaginate()}
+							onClick={searched ? paginateSearch : paginatePlaying}
 						>
 							Load more movies
 						</Button>
-					)}
+					) : null}
 				</Box>
 			)}
 		</Box>

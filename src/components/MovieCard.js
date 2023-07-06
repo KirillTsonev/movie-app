@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import {Box, Text, Image, Button, ScaleFade, useDisclosure} from "@chakra-ui/react";
 
+import img404Thumbnail from "../assets/img404Thumbnail.jpg";
+
 const MovieCard = ({movie, index}) => {
 	useEffect(() => {
 		onOpen();
@@ -30,9 +32,11 @@ const MovieCard = ({movie, index}) => {
 				<Image
 					src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
 					w="100%"
+					h="125px"
 					borderTopRightRadius="10px"
 					borderTopLeftRadius="10px"
 					borderBottom="2px solid"
+					fallbackSrc={img404Thumbnail}
 				/>
 				<Box
 					display="flex"

@@ -1,11 +1,14 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
-
 import {Box, Button} from "@chakra-ui/react";
+
+import useSearchBarSimple from "../api/useSearchBarSimple";
 
 import ThemeSwitch from "./ThemeSwitch";
 
 const NavBar = () => {
+	const {refetchSearch} = useSearchBarSimple();
+
 	return (
 		<Box
 			as="nav"
@@ -52,6 +55,7 @@ const NavBar = () => {
 					fontWeight: "bold",
 					textTransform: "uppercase",
 				}}
+				onClick={refetchSearch}
 			>
 				Your collections
 			</Button>

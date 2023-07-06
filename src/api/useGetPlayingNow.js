@@ -12,27 +12,32 @@ const useGetPlayingNow = () => {
 
 	const paginationLinkNum = useRef(1);
 
-	const {isLoading, error, data, refetch} = useQuery({
+	const {
+		isLoading: isLoadingPlaying,
+		error: errorPlaying,
+		data: dataPlaying,
+		refetch: refetchPlaying,
+	} = useQuery({
 		queryKey: ["playingNow"],
 		queryFn: () => fetchMovies().then((res) => res.json()),
 	});
 
 	useEffect(() => {
-		if (data) {
+		if (dataPlaying?.results.length) {
 			if (paginationNum === 10) {
-				setMovies(data.results.slice(0, 10));
+				setMovies(dataPlaying.results.slice(0, 10));
 			} else {
-				setMovies([...new Set([...movies, ...data.results])].slice(0, paginationNum));
+				setMovies([...new Set([...movies, ...dataPlaying.results])].slice(0, paginationNum));
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data, paginationNum]);
+	}, [dataPlaying, paginationNum]);
 
-	function handlePaginate() {
+	function paginatePlaying() {
 		if ((movies.length / 10) % 2 === 0) {
 			paginationLinkNum.current++;
 
-			refetch();
+			refetchPlaying();
 		}
 
 		setPaginationNum(paginationNum + 10);
@@ -53,7 +58,7 @@ const useGetPlayingNow = () => {
 		);
 	}
 
-	return {isLoading, error, movies, handlePaginate, data, setMovies};
+	return {isLoadingPlaying, errorPlaying, paginatePlaying, dataPlaying, movies, refetchPlaying};
 };
 
 export default useGetPlayingNow;
