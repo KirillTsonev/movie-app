@@ -1,12 +1,16 @@
 import {useQuery} from "react-query";
-import {useContext} from "react";
 import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 
-import {MoviesContext} from "../context/moviesContext";
+import {setData} from "../redux/homeSlice";
+
 import {apiAuthorization} from "../constants";
 
 const useGetPlayingNow = () => {
-	const {setData, paginationIndex, results} = useContext(MoviesContext);
+	const results = useSelector((state) => state.home.results);
+	const paginationIndex = useSelector((state) => state.home.paginationIndex);
+
+	const dispatch = useDispatch();
 
 	const {
 		isLoading: isLoadingPlaying,
@@ -16,11 +20,12 @@ const useGetPlayingNow = () => {
 		queryKey: ["playingNow", paginationIndex],
 		queryFn: () => fetchMovies(paginationIndex).then((res) => res.json()),
 		keepPreviousData: true,
+		enabled: results === "all" ? true : false,
 	});
 
 	useEffect(() => {
 		if (dataPlaying && results === "all") {
-			setData(dataPlaying.results);
+			dispatch(setData(dataPlaying.results));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataPlaying]);
@@ -37,7 +42,7 @@ const useGetPlayingNow = () => {
 		return fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=` + num, options);
 	}
 
-	return {isLoadingPlaying, errorPlaying, dataPlaying};
+	return {isLoadingPlaying, errorPlaying};
 };
 
 export default useGetPlayingNow;

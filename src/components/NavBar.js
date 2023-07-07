@@ -1,13 +1,10 @@
-import React, {useContext} from "react";
+import React from "react";
 import {NavLink} from "react-router-dom";
 import {Box, Button} from "@chakra-ui/react";
 
 import ThemeSwitch from "./ThemeSwitch";
-import {MoviesContext} from "../context/moviesContext";
 
 const NavBar = () => {
-	const {setResults} = useContext(MoviesContext);
-
 	return (
 		<Box
 			as="nav"
@@ -54,7 +51,6 @@ const NavBar = () => {
 					fontWeight: "bold",
 					textTransform: "uppercase",
 				}}
-				onClick={() => setResults("all")}
 			>
 				Your collections
 			</Button>

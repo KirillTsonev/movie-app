@@ -1,6 +1,6 @@
 import {createContext, useState} from "react";
 
-import usePagination from "../api/usePagination";
+import usePagination from "../hooks/usePagination";
 
 const MoviesContext = createContext([]);
 

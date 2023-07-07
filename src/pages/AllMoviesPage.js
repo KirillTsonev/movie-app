@@ -1,12 +1,15 @@
-import React, {useState, useContext} from "react";
+import React from "react";
 import {Box, Button, Text} from "@chakra-ui/react";
 import {SpinnerDotted} from "spinners-react";
+import {useDispatch} from "react-redux";
 
 import useGetPlayingNow from "../api/useGetPlayingNow";
 import useSearchBarSimple from "../api/useSearchBarSimple";
 import useSearchBarComplex from "../api/useSearchBarComplex";
+import usePagination from "../hooks/usePagination";
+import useSelectors from "../redux/useSelectors";
 
-import {MoviesContext} from "../context/moviesContext";
+import {setComplexSearch} from "../redux/homeSlice";
 
 import NavBar from "../components/NavBar";
 import SearchBarSimple from "../components/SearchBarSimple";
@@ -14,14 +17,12 @@ import SearchBarComplex from "../components/SearchBarComplex";
 import MovieCard from "../components/MovieCard";
 
 const AllMoviesPage = () => {
-	const [complexSearch, setComplexSearch] = useState(false);
-	const [searched, setSearched] = useState(false);
-
-	const {isLoadingPlaying, errorPlaying, dataPlaying} = useGetPlayingNow();
+	const {isLoadingPlaying, errorPlaying} = useGetPlayingNow();
 	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
 	const {isLoadingSearchComplex, errorSearchComplex} = useSearchBarComplex();
-
-	const {movies, paginate} = useContext(MoviesContext);
+	const {movies, data, complexSearch, totalResults} = useSelectors();
+	const {paginate} = usePagination();
+	const dispatch = useDispatch();
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -31,7 +32,7 @@ const AllMoviesPage = () => {
 				<MovieCard
 					key={a.id}
 					movie={a}
-					index={dataPlaying.results.indexOf(a)}
+					index={data.indexOf(a)}
 				/>
 			);
 		});
@@ -46,12 +47,12 @@ const AllMoviesPage = () => {
 			mx="auto"
 		>
 			<NavBar />
-			<Box display="flex">
-				{complexSearch ? (
-					<SearchBarComplex setSearched={setSearched} />
-				) : (
-					<SearchBarSimple setSearched={setSearched} />
-				)}
+			<Box
+				display="flex"
+				w="100%"
+			>
+				<SearchBarComplex complexSearch={complexSearch} />
+				<SearchBarSimple complexSearch={complexSearch} />
 				<Button
 					mx="auto"
 					bg="#00c0f7"
@@ -63,7 +64,7 @@ const AllMoviesPage = () => {
 						boxShadow:
 							"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
 					}}
-					onClick={() => setComplexSearch(!complexSearch)}
+					onClick={() => dispatch(setComplexSearch())}
 				>
 					{complexSearch ? "Simple search" : "Complex search"}
 				</Button>
@@ -93,9 +94,9 @@ const AllMoviesPage = () => {
 						gridAutoRows="380px"
 						rowGap="10px"
 					>
-						{renderMovies(movies)}
+						{movies && renderMovies(movies)}
 					</Box>
-					{(!searched && movies.length < 100) || (searched && movies.length === 10) ? (
+					{movies.length < 100 && movies.length < totalResults && (
 						<Button
 							display="block"
 							mx="auto"
@@ -112,7 +113,7 @@ const AllMoviesPage = () => {
 						>
 							Load more movies
 						</Button>
-					) : null}
+					)}
 				</Box>
 			)}
 		</Box>

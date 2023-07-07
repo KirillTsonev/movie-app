@@ -1,13 +1,17 @@
-import {useState, useContext, useEffect} from "react";
+import {useState, useEffect} from "react";
 import {useQuery} from "react-query";
+import {useDispatch} from "react-redux";
+
+import {setData, setTotalResults} from "../redux/homeSlice";
+
+import useSelectors from "../redux/useSelectors";
 
 import {apiAuthorization} from "../constants";
-import {MoviesContext} from "../context/moviesContext";
 
 const useSearchBarSimple = () => {
 	const [searchString, setSearchString] = useState("");
-
-	const {setData, results} = useContext(MoviesContext);
+	const {results, paginationIndex, title} = useSelectors();
+	const dispatch = useDispatch();
 
 	const {
 		isLoading: isLoadingSearchSimple,
@@ -15,19 +19,21 @@ const useSearchBarSimple = () => {
 		data: dataSearchSimple,
 		refetch: refetchSearchSimple,
 	} = useQuery({
-		queryKey: ["simpleSearch"],
-		queryFn: () => fetchSimpleSearch().then((res) => res.json()),
-		enabled: false,
+		queryKey: ["simpleSearch", paginationIndex],
+		queryFn: () => fetchSimpleSearch(paginationIndex).then((res) => res.json()),
+		keepPreviousData: true,
+		enabled: results === "simple" ? true : false,
 	});
 
 	useEffect(() => {
 		if (dataSearchSimple && results === "simple") {
-			setData(dataSearchSimple.results);
+			dispatch(setTotalResults(dataSearchSimple.total_results));
+			dispatch(setData(dataSearchSimple.results));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSearchSimple]);
 
-	function fetchSimpleSearch() {
+	function fetchSimpleSearch(num) {
 		const options = {
 			method: "GET",
 			headers: {
@@ -39,7 +45,7 @@ const useSearchBarSimple = () => {
 		setSearchString("");
 
 		return fetch(
-			`https://api.themoviedb.org/3/search/movie?query=${searchString}&include_adult=false&language=en-US&page=1`,
+			`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=` + num,
 			options
 		);
 	}
