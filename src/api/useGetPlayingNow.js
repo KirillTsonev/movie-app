@@ -1,17 +1,15 @@
 import {useQuery} from "react-query";
-import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
-
 import {apiAuthorization} from "../constants";
+import useSelectors from "../redux/useSelectors";
 
 const useGetPlayingNow = () => {
-	const results = useSelector((state) => state.home.results);
-	const paginationIndex = useSelector((state) => state.home.paginationIndex);
+	const [paginationIndex, setPaginationIndex] = useState(1);
 
-	const dispatch = useDispatch();
-
+	const {results, data} = useSelectors();
 	const {
 		isLoading: isLoadingPlaying,
 		error: errorPlaying,
@@ -21,14 +19,23 @@ const useGetPlayingNow = () => {
 		queryFn: () => fetchMovies(paginationIndex).then((res) => res.json()),
 		keepPreviousData: true,
 		enabled: results === "all" ? true : false,
+		cacheTime: 0,
 	});
 
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		if (dataPlaying && results === "all") {
-			dispatch(setData(dataPlaying.results));
+		if (results === "all") {
+			if (dataPlaying) {
+				dispatch(setData([...new Set([...data, ...dataPlaying.results])]));
+
+				if (paginationIndex < 5) {
+					setPaginationIndex(paginationIndex + 1);
+				}
+			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataPlaying]);
+	}, [dataPlaying, paginationIndex]);
 
 	function fetchMovies(num) {
 		const options = {
@@ -42,7 +49,7 @@ const useGetPlayingNow = () => {
 		return fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=` + num, options);
 	}
 
-	return {isLoadingPlaying, errorPlaying};
+	return {isLoadingPlaying, errorPlaying, setPaginationIndex};
 };
 
 export default useGetPlayingNow;

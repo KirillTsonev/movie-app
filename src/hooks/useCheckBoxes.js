@@ -1,29 +1,23 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
 
-const useCheckBoxes = (fn) => {
-	const [showGenres, setShowGenres] = useState(false);
+import {setGenres} from "../redux/queriesSlice";
+
+const useCheckBoxes = () => {
 	const [selectedGenres, setSelectedGenres] = useState("");
-	const [checks, setChecks] = useState([
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-	]);
+	const [checks, setChecks] = useState([]);
+
+	useEffect(() => {
+		const arr = [];
+
+		for (let i = 0; i < 19; i++) {
+			arr.push(false);
+		}
+
+		setChecks(arr);
+	}, []);
+
+	const dispatch = useDispatch();
 
 	function handleCheckGenre(e, index) {
 		if (e.target.checked) {
@@ -39,15 +33,11 @@ const useCheckBoxes = (fn) => {
 
 			setSelectedGenres(selectedGenres.filter((a) => a !== e.target.value));
 		}
+
+		dispatch(setGenres(selectedGenres));
 	}
 
-	function handleGenres() {
-		setShowGenres(false);
-
-		fn(selectedGenres);
-	}
-
-	return {showGenres, setShowGenres, handleCheckGenre, handleGenres, selectedGenres, checks, setChecks};
+	return {handleCheckGenre, selectedGenres, setSelectedGenres, checks, setChecks};
 };
 
 export default useCheckBoxes;

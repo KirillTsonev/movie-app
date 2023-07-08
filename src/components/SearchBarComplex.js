@@ -1,40 +1,34 @@
 import React from "react";
-import {Box, Input, Button, NumberInput, NumberInputField, Checkbox} from "@chakra-ui/react";
+import {
+	Box,
+	Input,
+	Button,
+	NumberInput,
+	NumberInputField,
+	Checkbox,
+	Popover,
+	PopoverBody,
+	PopoverContent,
+	PopoverTrigger,
+	PopoverArrow,
+	useDisclosure,
+} from "@chakra-ui/react";
 import {useDispatch} from "react-redux";
 
-import useSearchBarComplex from "../api/useSearchBarComplex";
 import useFetchGenres from "../api/useFetchGenres";
 import useCheckBoxes from "../hooks/useCheckBoxes";
+import useSelectors from "../redux/useSelectors";
+import {setCast, setYear} from "../redux/queriesSlice";
+import useHandleComplexSearch from "../hooks/useHandleComplexSearch";
 
-import {setResults, resetPagination} from "../redux/homeSlice";
-import {setCastStore, setGenresStore, setYearStore} from "../redux/queriesSlice";
-
-const SearchBarComplex = ({complexSearch}) => {
-	const {yearState, setYearState, castState, setCastState, refetchSearchComplex, setGenresState} =
-		useSearchBarComplex();
+const SearchBarComplex = ({complexSearch, setSearched}) => {
 	const {dataGenres} = useFetchGenres();
-	const {showGenres, setShowGenres, handleCheckGenre, handleGenres, selectedGenres, checks, setChecks} =
-		useCheckBoxes(setGenresState);
+	const {handleCheckGenre, selectedGenres, checks} = useCheckBoxes();
+	const {year, cast} = useSelectors();
+	const {onOpen} = useDisclosure();
+	const {handleSearch} = useHandleComplexSearch(setSearched);
+
 	const dispatch = useDispatch();
-
-	function handleSearch(e) {
-		e.preventDefault();
-
-		if (!!yearState || !!castState || !!selectedGenres) {
-			dispatch(setResults("complex"));
-			dispatch(resetPagination());
-
-			refetchSearchComplex();
-
-			setChecks(checks.map((a) => (a = false)));
-		}
-	}
-
-	function handleInput(e, setState, setStore) {
-		setState(e.target.value);
-
-		dispatch(setStore(e.target.value));
-	}
 
 	return (
 		<Box
@@ -52,59 +46,45 @@ const SearchBarComplex = ({complexSearch}) => {
 					width="30%"
 					position="relative"
 				>
-					<Button
-						variant="outline"
-						w="100%"
-						onClick={() => setShowGenres(!showGenres)}
-						border="2px solid #00c0f7"
-					>
-						Choose genres
-					</Button>
-					<Box
-						w="500px"
-						textAlign="center"
-						position="absolute"
-						border="2px solid"
-						borderRadius="10px"
-						color="var(--chakra-colors-chakra-body-text)"
-						bg="var(--chakra-colors-chakra-body-bg)"
-						px="10px"
-						display={showGenres ? "block" : "none"}
-						top="50px"
-					>
-						<Box>
-							{dataGenres &&
-								dataGenres.genres.map((a, i) => (
-									<Checkbox
-										key={a.id}
-										value={a.id}
-										id={a.id}
-										mr="10px"
-										mt="10px"
-										colorScheme="green"
-										isChecked={checks[i]}
-										onChange={(e) => handleCheckGenre(e, i)}
-									>
-										{a.name}
-									</Checkbox>
-								))}
-						</Box>
-						<Button
-							m="10px"
-							ml="auto"
-							display="block"
-							bg="#00c0f7"
-							_hover={{
-								background: "#17b824",
-								transform: "translateX(5px) translateY(-5px)",
-								boxShadow:
-									"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-							}}
-							onClick={handleGenres}
+					<Popover>
+						<PopoverTrigger>
+							<Button
+								variant="outline"
+								w="100%"
+								onClick={onOpen}
+								border="2px solid #00c0f7"
+								bg={selectedGenres.length > 0 && "#17b824"}
+							>
+								Choose genres
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent
+							w="500px"
+							pb="10px"
+							textAlign="center"
 						>
-							Save genres
-						</Button>
-					</Box>
+							<PopoverArrow />
+							<PopoverBody>
+								<Box>
+									{dataGenres &&
+										dataGenres.genres.map((a, i) => (
+											<Checkbox
+												key={a.id}
+												value={a.id}
+												id={a.id}
+												mr="10px"
+												mt="10px"
+												colorScheme="green"
+												isChecked={checks[i]}
+												onChange={(e) => handleCheckGenre(e, i)}
+											>
+												{a.name}
+											</Checkbox>
+										))}
+								</Box>
+							</PopoverBody>
+						</PopoverContent>
+					</Popover>
 				</Box>
 				<Input
 					placeholder="Search by cast, comma separated"
@@ -112,13 +92,13 @@ const SearchBarComplex = ({complexSearch}) => {
 					name="cast"
 					w="30%"
 					px="10px"
-					value={castState}
-					onChange={(e) => handleInput(e, setCastState, setCastStore)}
+					value={cast}
+					onChange={(e) => dispatch(setCast(e.target.value))}
 					border="2px solid #00c0f7"
 				/>
 				<NumberInput
 					w="21%"
-					value={yearState}
+					value={year}
 				>
 					<NumberInputField
 						name="year"
@@ -126,20 +106,12 @@ const SearchBarComplex = ({complexSearch}) => {
 						placeholder="Search by release year"
 						_placeholder={{opacity: 1, color: "gray.500"}}
 						border="2px solid #00c0f7"
-						onChange={(e) => handleInput(e, setYearState, setYearStore)}
+						onChange={(e) => dispatch(setYear(e.target.value))}
 					/>
 				</NumberInput>
 			</Box>
 			<Button
-				bg="#00c0f7"
-				transition="all .4s"
 				ml="20px"
-				_hover={{
-					background: "#17b824",
-					transform: "translateX(5px) translateY(-5px)",
-					boxShadow:
-						"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-				}}
 				type="submit"
 			>
 				Search

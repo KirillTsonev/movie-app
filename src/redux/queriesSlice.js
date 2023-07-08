@@ -2,9 +2,10 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
 	title: "",
-	genresStore: "",
-	castStore: "",
-	yearStore: "",
+	genres: "",
+	cast: "",
+	year: "",
+	complexSearch: false,
 };
 
 const queriesSlice = createSlice({
@@ -14,20 +15,26 @@ const queriesSlice = createSlice({
 		setTitle(state, action) {
 			state.title = action.payload;
 		},
-		setGenresStore(state, action) {
-			state.genresStore = action.payload;
+		setGenres(state, action) {
+			state.genres = action.payload;
 		},
-		setCastStore(state, action) {
-			state.castStore = action.payload;
+		setCast(state, action) {
+			state.cast = action.payload;
 		},
-		setYearStore(state, action) {
-			state.yearStore = action.payload;
+		setYear(state, action) {
+			state.year = action.payload;
 		},
-		resetQueriesState() {
-			return initialState;
+		setComplexSearch(state) {
+			state.complexSearch = !state.complexSearch;
+		},
+		resetQueriesState(state) {
+			state.title = "";
+			state.year = "";
+			state.genres = "";
+			state.cast = "";
 		},
 	},
 });
 
-export const {setTitle, setGenresStore, setCastStore, setYearStore, resetQueriesState} = queriesSlice.actions;
+export const {setTitle, setGenres, setCast, setYear, setComplexSearch, resetQueriesState} = queriesSlice.actions;
 export default queriesSlice;

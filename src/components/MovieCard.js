@@ -16,9 +16,25 @@ const MovieCard = ({movie, index}) => {
 			in={isOpen}
 			initialScale={0.7}
 			style={
-				index < 11
-					? {transition: `all ${0.2 + (index + 1) * 0.075}s`}
-					: {transition: `all ${0.2 + (index / 2 + 1) * 0.075}s`}
+				index < 10
+					? {transition: `all ${0.3 + index * 0.1}s`}
+					: index > 9 && index < 20
+					? {transition: `all ${0.3 + (index - 10) * 0.1}s`}
+					: index > 19 && index < 30
+					? {transition: `all ${0.3 + (index - 20) * 0.1}s`}
+					: index > 29 && index < 40
+					? {transition: `all ${0.3 + (index - 30) * 0.1}s`}
+					: index > 39 && index < 50
+					? {transition: `all ${0.3 + (index - 40) * 0.1}s`}
+					: index > 49 && index < 60
+					? {transition: `all ${0.3 + (index - 50) * 0.1}s`}
+					: index > 59 && index < 70
+					? {transition: `all ${0.3 + (index - 60) * 0.1}s`}
+					: index > 69 && index < 80
+					? {transition: `all ${0.3 + (index - 70) * 0.1}s`}
+					: index > 79 && index < 90
+					? {transition: `all ${0.3 + (index - 80) * 0.1}s`}
+					: {transition: `all ${0.3 + (index - 90) * 0.1}s`}
 			}
 		>
 			<Box
@@ -56,46 +72,10 @@ const MovieCard = ({movie, index}) => {
 					justifyContent="space-around"
 					mt="10px"
 				>
-					<Button
-						w="40%"
-						bg="#00c0f7"
-						transition="all .4s"
-						_hover={{
-							background: "#17b824",
-							transform: "translateX(5px) translateY(-5px)",
-							boxShadow:
-								"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-						}}
-					>
-						Favorites
-					</Button>
-					<Button
-						w="40%"
-						bg="#00c0f7"
-						transition="all .4s"
-						_hover={{
-							background: "#17b824",
-							transform: "translateX(5px) translateY(-5px)",
-							boxShadow:
-								"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-						}}
-					>
-						Watchlist
-					</Button>
+					<Button w="40%">Favorites</Button>
+					<Button w="40%">Watchlist</Button>
 				</Box>
-				<Button
-					bg="#00c0f7"
-					transition="all .4s"
-					_hover={{
-						background: "#17b824",
-						transform: "translateX(5px) translateY(-5px)",
-						boxShadow:
-							"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-					}}
-					mt="10px"
-				>
-					Details
-				</Button>
+				<Button mt="10px">Details</Button>
 			</Box>
 		</ScaleFade>
 	);

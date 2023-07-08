@@ -8,6 +8,8 @@ import AllMoviesPage from "../pages/AllMoviesPage";
 import CollectionsPage from "../pages/CollectionsPage";
 import Error404Page from "../pages/Error404Page";
 
+import theme from "../theme/theme";
+
 import {setupStore} from "../redux/store";
 
 const router = createBrowserRouter([
@@ -32,7 +34,7 @@ const store = setupStore();
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<ChakraProvider>
+			<ChakraProvider theme={theme}>
 				<Provider store={store}>
 					<RouterProvider router={router} />
 				</Provider>

@@ -2,19 +2,16 @@ import {useState, useEffect} from "react";
 import {useQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
-import {setData, setTotalResults} from "../redux/homeSlice";
-
+import {setData} from "../redux/homeSlice";
+import {resetQueriesState} from "../redux/queriesSlice";
 import {apiAuthorization} from "../constants";
-
 import useSelectors from "../redux/useSelectors";
+import createComplexLink from "./createComplexLink";
 
 const useSearchBarComplex = () => {
-	const [castState, setCastState] = useState("");
-	const [yearState, setYearState] = useState("");
-	const [genresState, setGenresState] = useState("");
-	const {results, paginationIndex, yearStore, castStore, genresStore} = useSelectors();
-	const dispatch = useDispatch();
+	const [paginationIndex, setPaginationIndex] = useState(1);
 
+	const {results, year, cast, genres, data} = useSelectors();
 	const {
 		isLoading: isLoadingSearchComplex,
 		error: errorSearchComplex,
@@ -22,20 +19,32 @@ const useSearchBarComplex = () => {
 		refetch: refetchSearchComplex,
 	} = useQuery({
 		queryKey: ["complexSearch", paginationIndex],
-		queryFn: () => fetchComplexSearch(paginationIndex).then((res) => res.json()),
+		queryFn: () => fetchComplexSearch({year, cast, genres, paginationIndex}).then((res) => res.json()),
 		keepPreviousData: true,
-		enabled: results === "complex" ? true : false,
+		enabled: false,
+		cacheTime: 0,
 	});
 
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		if (dataSearchComplex && results === "complex") {
-			dispatch(setTotalResults(dataSearchComplex.total_results));
-			dispatch(setData(dataSearchComplex.results));
+		if (results === "complex") {
+			if (dataSearchComplex) {
+				dispatch(setData([...new Set([...data, ...dataSearchComplex.results])]));
+
+				if (paginationIndex < 5 && (!!year || !!cast || !!genres)) {
+					refetchSearchComplex();
+					setPaginationIndex(paginationIndex + 1);
+				} else {
+					dispatch(resetQueriesState());
+					setPaginationIndex(1);
+				}
+			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataSearchComplex]);
+	}, [dataSearchComplex, paginationIndex]);
 
-	async function fetchCast(actor) {
+	async function fetchComplexSearch({year, cast, genres, num}) {
 		const options = {
 			method: "GET",
 			headers: {
@@ -44,56 +53,9 @@ const useSearchBarComplex = () => {
 			},
 		};
 
-		actor = actor.replace(" ", "%20");
+		console.log(genres);
 
-		const response = await fetch(
-			`https://api.themoviedb.org/3/search/person?query=${actor}&include_adult=false&language=en-US&page=1`,
-			options
-		);
-
-		const result = await response.json();
-
-		return result.results[0].id;
-	}
-
-	async function fetchComplexSearch(num) {
-		const options = {
-			method: "GET",
-			headers: {
-				accept: "application/json",
-				Authorization: apiAuthorization,
-			},
-		};
-
-		let link =
-			"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=" +
-			num;
-
-		if (yearStore) {
-			link += `&primary_release_year=${yearStore}&sort_by=popularity.desc`;
-		} else {
-			link += "&sort_by=popularity.desc";
-		}
-
-		if (castStore) {
-			const castForFetch = castStore.split(",").map((a) => (a = a.trim()));
-
-			let data = await Promise.all(
-				castForFetch.map(async (a) => {
-					return await fetchCast(a);
-				})
-			);
-
-			link += `&with_cast=${data.join(",")}`;
-		}
-
-		if (genresStore) {
-			link += `&with_genres=${genresStore.join(",")}`;
-		}
-
-		setCastState("");
-		setYearState("");
-		setGenresState("");
+		const link = await createComplexLink({year, cast, genres, num});
 
 		return fetch(link, options);
 	}
@@ -102,11 +64,6 @@ const useSearchBarComplex = () => {
 		refetchSearchComplex,
 		isLoadingSearchComplex,
 		errorSearchComplex,
-		yearState,
-		setYearState,
-		castState,
-		setCastState,
-		setGenresState,
 	};
 };
 

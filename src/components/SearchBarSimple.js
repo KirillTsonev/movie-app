@@ -1,32 +1,12 @@
 import React from "react";
 import {Input, Button, Box} from "@chakra-ui/react";
-import {useDispatch} from "react-redux";
 
 import useSearchBarSimple from "../api/useSearchBarSimple";
+import useHandleSimpleSearch from "../hooks/useHandleSimpleSearch";
 
-import {setResults, resetPagination} from "../redux/homeSlice";
-import {setTitle} from "../redux/queriesSlice";
-
-const SearchBarSimple = ({complexSearch}) => {
-	const {refetchSearchSimple, searchString, setSearchString} = useSearchBarSimple();
-	const dispatch = useDispatch();
-
-	function handleInput(e) {
-		setSearchString(e.target.value);
-
-		dispatch(setTitle(e.target.value));
-	}
-
-	function handleSearch(e) {
-		e.preventDefault();
-
-		if (searchString) {
-			dispatch(resetPagination());
-			dispatch(setResults("simple"));
-
-			refetchSearchSimple();
-		}
-	}
+const SearchBarSimple = ({complexSearch, setSearched}) => {
+	const {searchString} = useSearchBarSimple();
+	const {handleInput, handleSearch} = useHandleSimpleSearch(setSearched);
 
 	return (
 		<Box
@@ -44,15 +24,7 @@ const SearchBarSimple = ({complexSearch}) => {
 				onChange={(e) => handleInput(e)}
 			/>
 			<Button
-				bg="#00c0f7"
-				transition="all .4s"
 				ml="20px"
-				_hover={{
-					background: "#17b824",
-					transform: "translateX(5px) translateY(-5px)",
-					boxShadow:
-						"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-				}}
 				type="submit"
 			>
 				Search
