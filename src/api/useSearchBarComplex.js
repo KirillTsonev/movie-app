@@ -22,8 +22,7 @@ const useSearchBarComplex = () => {
 		refetch: refetchSearchComplex,
 	} = useQuery({
 		queryKey: ["complexSearch"],
-		queryFn: () =>
-			fetchComplexSearch({year, yearState, cast, castState, genres, num: paginationIndex}).then((res) => res.json()),
+		queryFn: () => fetchComplexSearch({year, yearState, cast, castState, genres, num: paginationIndex}),
 		keepPreviousData: true,
 		enabled: false,
 		cacheTime: 0,
@@ -48,7 +47,7 @@ const useSearchBarComplex = () => {
 
 		const link = await createComplexLink({year, yearState, cast, castState, genres, num});
 
-		return fetch(link, options);
+		return fetch(link, options).then((res) => res.json());
 	}
 
 	return {

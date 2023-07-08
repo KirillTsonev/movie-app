@@ -4,10 +4,14 @@ import {useDispatch} from "react-redux";
 import {setMovies, setPaginationSlice, setPaginationIndex} from "../redux/homeSlice";
 import useSelectors from "../redux/useSelectors";
 import useSearchBarComplex from "../api/useSearchBarComplex";
+import useSearchBarSimple from "../api/useSearchBarSimple";
+import useGetPlayingNow from "../api/useGetPlayingNow";
 
 const usePagination = () => {
 	const {paginationSlice, data, movies, results} = useSelectors();
 	const {refetchSearchComplex} = useSearchBarComplex();
+	const {refetchSearchSimple} = useSearchBarSimple();
+	const {refetchPlaying} = useGetPlayingNow();
 
 	const dispatch = useDispatch();
 
@@ -24,6 +28,14 @@ const usePagination = () => {
 
 			if (results === "complex") {
 				refetchSearchComplex();
+			}
+
+			if (results === "simple") {
+				refetchSearchSimple();
+			}
+
+			if (results === "all") {
+				refetchPlaying();
 			}
 		}
 	}

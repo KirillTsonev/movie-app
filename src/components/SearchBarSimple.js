@@ -6,8 +6,8 @@ import useHandleSimpleSearch from "../hooks/useHandleSimpleSearch";
 import useSelectors from "../redux/useSelectors";
 
 const SearchBarSimple = () => {
-	const {searchString} = useSearchBarSimple();
-	const {handleInput, handleSearch} = useHandleSimpleSearch();
+	const {titleState, setTitleState} = useSearchBarSimple();
+	const {handleSearch} = useHandleSimpleSearch();
 	const {complexSearch} = useSelectors();
 
 	return (
@@ -15,15 +15,15 @@ const SearchBarSimple = () => {
 			display={complexSearch ? "none" : "flex"}
 			w="85%"
 			as="form"
-			onSubmit={(e) => handleSearch(e)}
+			onSubmit={(e) => handleSearch({e, titleState, setTitleState})}
 		>
 			<Input
 				placeholder="Search movies by title"
 				_placeholder={{opacity: 1, color: "gray.500"}}
 				name="title"
 				border="2px solid #00c0f7"
-				value={searchString}
-				onChange={(e) => handleInput(e)}
+				value={titleState}
+				onChange={(e) => setTitleState(e.target.value)}
 			/>
 			<Button
 				ml="20px"

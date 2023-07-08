@@ -4,7 +4,11 @@ import {Box, Button} from "@chakra-ui/react";
 
 import ThemeSwitch from "./ThemeSwitch";
 
+import useGetPlayingNow from "../api/useGetPlayingNow";
+
 const NavBar = () => {
+	const {clearSearch} = useGetPlayingNow();
+
 	return (
 		<Box
 			as="nav"
@@ -15,6 +19,7 @@ const NavBar = () => {
 			w="1140px"
 			alignItems="center"
 			justifyContent="space-between"
+			id="top"
 		>
 			<Button
 				as={NavLink}
@@ -35,6 +40,7 @@ const NavBar = () => {
 					fontWeight: "bold",
 					textTransform: "uppercase",
 				}}
+				onClick={clearSearch}
 			>
 				Your collections
 			</Button>

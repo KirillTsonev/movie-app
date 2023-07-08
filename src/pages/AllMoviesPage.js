@@ -9,25 +9,22 @@ import useSearchBarComplex from "../api/useSearchBarComplex";
 import usePagination from "../hooks/usePagination";
 import useSelectors from "../redux/useSelectors";
 
-import {setSearched, setComplexSearch} from "../redux/settingsSlice";
+import {setComplexSearch, setSearched} from "../redux/settingsSlice";
 
 import NavBar from "../components/NavBar";
 import SearchBarSimple from "../components/SearchBarSimple";
 import SearchBarComplex from "../components/SearchBarComplex";
 import MovieCard from "../components/MovieCard";
+import UpButton from "../components/UpButton";
 
 const AllMoviesPage = () => {
-	const {isLoadingPlaying, errorPlaying, setPaginationIndex} = useGetPlayingNow();
+	const {isLoadingPlaying, errorPlaying, clearSearch} = useGetPlayingNow();
 	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
 	const {isLoadingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
 	const {movies, data, complexSearch, searched, totalResults} = useSelectors();
 	const {paginate} = usePagination();
 
 	const dispatch = useDispatch();
-
-	//up button and smooth scroll
-	//clear search
-	//searched to store to persist
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -43,12 +40,6 @@ const AllMoviesPage = () => {
 		});
 
 		return rows;
-	}
-
-	function clearSearch() {
-		dispatch(setSearched(false));
-
-		setPaginationIndex(1);
 	}
 
 	return (
@@ -148,6 +139,7 @@ const AllMoviesPage = () => {
 					No movies could be found using your queries, try different ones!
 				</Text>
 			) : null}
+			<UpButton />
 		</Box>
 	);
 };
