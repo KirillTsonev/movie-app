@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
 import {setTotalResults} from "../redux/settingsSlice";
-import {apiAuthorization} from "../constants";
+import {headers} from "../constants";
 import useSelectors from "../redux/useSelectors";
 import createComplexLink from "./createComplexLink";
 
@@ -39,10 +39,7 @@ const useSearchBarComplex = () => {
 	async function fetchComplexSearch({year, yearState, cast, castState, genres, num}) {
 		const options = {
 			method: "GET",
-			headers: {
-				accept: "application/json",
-				Authorization: apiAuthorization,
-			},
+			headers,
 		};
 
 		const link = await createComplexLink({year, yearState, cast, castState, genres, num});

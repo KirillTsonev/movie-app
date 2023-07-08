@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Image, Fade, Link} from "@chakra-ui/react";
+import {Image, Fade} from "@chakra-ui/react";
 
 import upButton from "../assets/arrow.png";
 
@@ -20,18 +20,24 @@ const UpButton = () => {
 		return () => window.removeEventListener("scroll", toggleVisibility);
 	}, []);
 
+	const scrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		});
+	};
+
 	return (
 		<Fade in={showButton}>
-			<Link href="#top">
-				<Image
-					src={upButton}
-					position="fixed"
-					top="90%"
-					left="95%"
-					cursor="pointer"
-					h="50px"
-				/>
-			</Link>
+			<Image
+				src={upButton}
+				position="fixed"
+				top="90%"
+				left="95%"
+				cursor="pointer"
+				h="50px"
+				onClick={scrollToTop}
+			/>
 		</Fade>
 	);
 };

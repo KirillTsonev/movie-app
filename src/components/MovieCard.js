@@ -1,9 +1,15 @@
 import React, {useEffect} from "react";
 import {Box, Text, Image, Button, ScaleFade, useDisclosure} from "@chakra-ui/react";
 
+import useHandleCollection from "../api/useHandleCollection";
+import useSelectors from "../redux/useSelectors";
+
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
 
 const MovieCard = ({movie, index}) => {
+	const {addToCollection} = useHandleCollection();
+	const {favorites} = useSelectors();
+
 	useEffect(() => {
 		onOpen();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,8 +78,23 @@ const MovieCard = ({movie, index}) => {
 					justifyContent="space-around"
 					mt="10px"
 				>
-					<Button w="40%">Favorites</Button>
-					<Button w="40%">Watchlist</Button>
+					<Button
+						w="40%"
+						variant={favorites.includes(movie.id) ? "delete" : "solid"}
+						onClick={
+							favorites.includes(movie.id)
+								? () => addToCollection.mutate({id: movie.id, key: "favorite", bool: false})
+								: () => addToCollection.mutate({id: movie.id, key: "favorite", bool: true})
+						}
+					>
+						Favorites
+					</Button>
+					<Button
+						w="40%"
+						onClick={() => addToCollection.mutate({id: movie.id, key: "watchlist"})}
+					>
+						Watchlist
+					</Button>
 				</Box>
 				<Button mt="10px">Details</Button>
 			</Box>

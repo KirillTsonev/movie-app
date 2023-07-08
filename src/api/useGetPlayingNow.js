@@ -1,9 +1,10 @@
 import {useQuery} from "react-query";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
+import {useLocation} from "react-router";
 
 import {setData} from "../redux/homeSlice";
-import {apiAuthorization} from "../constants";
+import {headers} from "../constants";
 import {setTotalResults} from "../redux/settingsSlice";
 import {resetQueries, setResults} from "../redux/queriesSlice";
 import {resetSettings} from "../redux/settingsSlice";
@@ -26,10 +27,15 @@ const useGetPlayingNow = () => {
 	});
 
 	const dispatch = useDispatch();
+	const location = useLocation();
 
 	useEffect(() => {
 		if (results === "all") {
 			refetchPlaying();
+		}
+
+		if (location.pathname === "/") {
+			clearSearch("all");
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -45,10 +51,7 @@ const useGetPlayingNow = () => {
 	async function fetchMovies(num) {
 		const options = {
 			method: "GET",
-			headers: {
-				accept: "application/json",
-				Authorization: apiAuthorization,
-			},
+			headers,
 		};
 
 		return fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=` + num, options).then((res) =>
@@ -56,11 +59,11 @@ const useGetPlayingNow = () => {
 		);
 	}
 
-	async function clearSearch() {
+	async function clearSearch(string) {
 		dispatch(resetQueries());
 		dispatch(resetHomeState());
 		dispatch(resetSettings());
-		await dispatch(setResults("all"));
+		await dispatch(setResults(string));
 
 		refetchPlaying();
 	}

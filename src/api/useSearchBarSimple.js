@@ -3,7 +3,7 @@ import {useQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
-import {apiAuthorization} from "../constants";
+import {headers} from "../constants";
 import {setTotalResults} from "../redux/settingsSlice";
 import useSelectors from "../redux/useSelectors";
 
@@ -37,10 +37,7 @@ const useSearchBarSimple = () => {
 	async function fetchSimpleSearch(num) {
 		const options = {
 			method: "GET",
-			headers: {
-				accept: "application/json",
-				Authorization: apiAuthorization,
-			},
+			headers,
 		};
 
 		return fetch(

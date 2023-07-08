@@ -74,7 +74,7 @@ const AllMoviesPage = () => {
 					left="calc(100% + 30px)"
 					top="50px"
 					display={searched ? "block" : "none"}
-					onClick={clearSearch}
+					onClick={() => clearSearch("all")}
 				>
 					Clear Search
 				</Button>

@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useQuery} from "react-query";
 
-import {apiAuthorization} from "../constants";
+import {headers} from "../constants";
 
 const useFetchGenres = () => {
 	const {data: dataGenres, refetch: refetchGenres} = useQuery({
@@ -18,10 +18,7 @@ const useFetchGenres = () => {
 	function fetchGenres() {
 		const options = {
 			method: "GET",
-			headers: {
-				accept: "application/json",
-				Authorization: apiAuthorization,
-			},
+			headers,
 		};
 
 		return fetch(`https://api.themoviedb.org/3/genre/movie/list?language=en`, options);

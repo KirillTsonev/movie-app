@@ -1,12 +1,9 @@
-import {apiAuthorization} from "../constants";
+import {headers} from "../constants";
 
 async function fetchCast(actor) {
 	const options = {
 		method: "GET",
-		headers: {
-			accept: "application/json",
-			Authorization: apiAuthorization,
-		},
+		headers,
 	};
 
 	actor = actor.replace(" ", "%20");

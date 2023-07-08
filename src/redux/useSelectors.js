@@ -16,6 +16,11 @@ const useSelectors = () => {
 	const searched = useSelector((state) => state.settings.searched);
 	const totalResults = useSelector((state) => state.settings.totalResults);
 
+	const dataCollectionsStore = useSelector((state) => state.collections.dataCollectionsStore);
+	const moviesCollections = useSelector((state) => state.collections.moviesCollections);
+	const favorites = useSelector((state) => state.collections.favorites);
+	const watchlist = useSelector((state) => state.collections.watchlist);
+
 	return {
 		results,
 		paginationSlice,
@@ -29,6 +34,10 @@ const useSelectors = () => {
 		complexSearch,
 		searched,
 		totalResults,
+		dataCollectionsStore,
+		moviesCollections,
+		favorites,
+		watchlist,
 	};
 };
 
