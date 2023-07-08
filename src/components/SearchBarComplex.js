@@ -17,18 +17,34 @@ import {useDispatch} from "react-redux";
 
 import useFetchGenres from "../api/useFetchGenres";
 import useCheckBoxes from "../hooks/useCheckBoxes";
-import useSelectors from "../redux/useSelectors";
-import {setCast, setYear} from "../redux/queriesSlice";
-import useHandleComplexSearch from "../hooks/useHandleComplexSearch";
+import useSearchBarComplex from "../api/useSearchBarComplex";
+import {setComplexQueries, resetQueries} from "../redux/queriesSlice";
+import {resetHomeState} from "../redux/homeSlice";
 
 const SearchBarComplex = ({complexSearch, setSearched}) => {
 	const {dataGenres} = useFetchGenres();
-	const {handleCheckGenre, selectedGenres, checks} = useCheckBoxes();
-	const {year, cast} = useSelectors();
+	const {castState, yearState, setCastState, setYearState, refetchSearchComplex} = useSearchBarComplex();
+	const {selectedGenres, setSelectedGenres, setChecks, checks, handleCheckGenre} = useCheckBoxes();
 	const {onOpen} = useDisclosure();
-	const {handleSearch} = useHandleComplexSearch(setSearched);
 
 	const dispatch = useDispatch();
+
+	async function handleSearch(e) {
+		e.preventDefault();
+
+		if ((yearState >= 1700 && yearState <= 2023) || !!castState || selectedGenres.length > 0) {
+			await dispatch(resetQueries());
+			await dispatch(resetHomeState());
+			await dispatch(setComplexQueries({selectedGenres, castState, yearState}));
+
+			setSearched(true);
+
+			refetchSearchComplex();
+
+			setSelectedGenres([]);
+			setChecks(checks.map(() => false));
+		}
+	}
 
 	return (
 		<Box
@@ -92,13 +108,16 @@ const SearchBarComplex = ({complexSearch, setSearched}) => {
 					name="cast"
 					w="30%"
 					px="10px"
-					value={cast}
-					onChange={(e) => dispatch(setCast(e.target.value))}
+					value={castState}
+					onChange={(e) => setCastState(e.target.value)}
 					border="2px solid #00c0f7"
 				/>
 				<NumberInput
 					w="21%"
-					value={year}
+					value={yearState}
+					min="1700"
+					max="2023"
+					isValidCharacter={(character) => character.match(/^[0-9]$/)}
 				>
 					<NumberInputField
 						name="year"
@@ -106,7 +125,7 @@ const SearchBarComplex = ({complexSearch, setSearched}) => {
 						placeholder="Search by release year"
 						_placeholder={{opacity: 1, color: "gray.500"}}
 						border="2px solid #00c0f7"
-						onChange={(e) => dispatch(setYear(e.target.value))}
+						onChange={(e) => setYearState(e.target.value)}
 					/>
 				</NumberInput>
 			</Box>

@@ -3,7 +3,7 @@ import {useQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
-import {resetQueriesState} from "../redux/queriesSlice";
+import {resetQueries} from "../redux/queriesSlice";
 import useSelectors from "../redux/useSelectors";
 import {apiAuthorization} from "../constants";
 
@@ -36,7 +36,7 @@ const useSearchBarSimple = () => {
 					setPaginationIndex(paginationIndex + 1);
 				} else {
 					setPaginationIndex(1);
-					dispatch(resetQueriesState());
+					dispatch(resetQueries());
 				}
 			}
 		}

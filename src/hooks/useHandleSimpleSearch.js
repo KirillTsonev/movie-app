@@ -1,28 +1,27 @@
 import {useDispatch} from "react-redux";
 
 import useSearchBarSimple from "../api/useSearchBarSimple";
-import {setResults, resetHomeState} from "../redux/homeSlice";
-import {setTitle} from "../redux/queriesSlice";
+import {resetHomeState} from "../redux/homeSlice";
+import {setSimpleQueries} from "../redux/queriesSlice";
+import {setSearched} from "../redux/settingsSlice";
 
-const useHandleSimpleSearch = (fn) => {
+const useHandleSimpleSearch = () => {
 	const {refetchSearchSimple, searchString, setSearchString} = useSearchBarSimple();
 
 	const dispatch = useDispatch();
 
 	function handleInput(e) {
 		setSearchString(e.target.value);
-
-		dispatch(setTitle(e.target.value));
 	}
 
 	function handleSearch(e) {
 		e.preventDefault();
 
 		if (searchString) {
-			fn(true);
+			dispatch(setSearched(true));
 
 			dispatch(resetHomeState());
-			dispatch(setResults("simple"));
+			dispatch(setSimpleQueries(searchString));
 
 			refetchSearchSimple();
 		}

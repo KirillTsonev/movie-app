@@ -1,6 +1,6 @@
-import {extendTheme} from "@chakra-ui/react";
+import {extendTheme, defineStyleConfig} from "@chakra-ui/react";
 
-const Button = {
+const Button = defineStyleConfig({
 	variants: {
 		solid: {
 			bg: "#00c0f7",
@@ -13,7 +13,7 @@ const Button = {
 			},
 		},
 	},
-};
+});
 
 const theme = extendTheme({
 	components: {

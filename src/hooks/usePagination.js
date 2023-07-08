@@ -1,11 +1,13 @@
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 
-import {setMovies, setPaginationSlice} from "../redux/homeSlice";
+import {setMovies, setPaginationSlice, setPaginationIndex} from "../redux/homeSlice";
 import useSelectors from "../redux/useSelectors";
+import useSearchBarComplex from "../api/useSearchBarComplex";
 
 const usePagination = () => {
-	const {paginationSlice, data, movies} = useSelectors();
+	const {paginationSlice, data, movies, results} = useSelectors();
+	const {refetchSearchComplex} = useSearchBarComplex();
 
 	const dispatch = useDispatch();
 
@@ -15,7 +17,15 @@ const usePagination = () => {
 	}, [data, paginationSlice]);
 
 	function paginate() {
-		dispatch(setPaginationSlice(paginationSlice + 10));
+		dispatch(setPaginationSlice());
+
+		if (data.length === movies.length || movies.length === 10) {
+			dispatch(setPaginationIndex());
+
+			if (results === "complex") {
+				refetchSearchComplex();
+			}
+		}
 	}
 
 	return {paginate};

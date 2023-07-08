@@ -3,10 +3,12 @@ import {Input, Button, Box} from "@chakra-ui/react";
 
 import useSearchBarSimple from "../api/useSearchBarSimple";
 import useHandleSimpleSearch from "../hooks/useHandleSimpleSearch";
+import useSelectors from "../redux/useSelectors";
 
-const SearchBarSimple = ({complexSearch, setSearched}) => {
+const SearchBarSimple = () => {
 	const {searchString} = useSearchBarSimple();
-	const {handleInput, handleSearch} = useHandleSimpleSearch(setSearched);
+	const {handleInput, handleSearch} = useHandleSimpleSearch();
+	const {complexSearch} = useSelectors();
 
 	return (
 		<Box

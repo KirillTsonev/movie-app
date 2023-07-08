@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Box, Button, Text} from "@chakra-ui/react";
 import {SpinnerDotted} from "spinners-react";
 import {useDispatch} from "react-redux";
@@ -8,27 +8,25 @@ import useSearchBarSimple from "../api/useSearchBarSimple";
 import useSearchBarComplex from "../api/useSearchBarComplex";
 import usePagination from "../hooks/usePagination";
 import useSelectors from "../redux/useSelectors";
-import {setComplexSearch} from "../redux/queriesSlice";
+
+import {setSearched, setComplexSearch} from "../redux/settingsSlice";
+
 import NavBar from "../components/NavBar";
 import SearchBarSimple from "../components/SearchBarSimple";
 import SearchBarComplex from "../components/SearchBarComplex";
 import MovieCard from "../components/MovieCard";
 
 const AllMoviesPage = () => {
-	const [searched, setSearched] = useState(false);
-
 	const {isLoadingPlaying, errorPlaying, setPaginationIndex} = useGetPlayingNow();
 	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
-	const {isLoadingSearchComplex, errorSearchComplex} = useSearchBarComplex();
-	const {movies, data, complexSearch} = useSelectors();
+	const {isLoadingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
+	const {movies, data, complexSearch, searched} = useSelectors();
 	const {paginate} = usePagination();
 
 	const dispatch = useDispatch();
 
-	//up button
+	//up button and smooth scroll
 	//clear search
-	//complex pagination
-	//no cast found error
 	//searched to store to persist
 
 	function renderMovies(arr) {
@@ -48,7 +46,7 @@ const AllMoviesPage = () => {
 	}
 
 	function clearSearch() {
-		setSearched(false);
+		dispatch(setSearched(false));
 
 		setPaginationIndex(1);
 	}
@@ -98,15 +96,25 @@ const AllMoviesPage = () => {
 				>
 					<SpinnerDotted size={"50%"} />
 				</Box>
-			) : errorPlaying || errorSearchSimple || errorSearchComplex ? (
+			) : errorPlaying ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"
 					py="20px"
 				>
-					There are problems with our servers, please try again later.
+					There is a problem with our servers, please try again later!
 				</Text>
-			) : (
+			) : errorSearchSimple || errorSearchComplex ? (
+				<Text
+					textAlign="center"
+					fontSize="25px"
+					py="20px"
+				>
+					{errorSearchComplex.message === "result.results[0] is undefined"
+						? "No such cast found, try another query!"
+						: "There is a problem with our servers, please try again later!"}
+				</Text>
+			) : movies.length > 0 ? (
 				<Box
 					py="30px"
 					mb="50px"
@@ -120,7 +128,7 @@ const AllMoviesPage = () => {
 					>
 						{movies && renderMovies(movies)}
 					</Box>
-					{movies.length < data.length && (
+					{movies.length < 100 && movies.length < data.length && (
 						<Button
 							display="block"
 							mx="auto"
@@ -131,7 +139,15 @@ const AllMoviesPage = () => {
 						</Button>
 					)}
 				</Box>
-			)}
+			) : dataSearchComplex?.results.length === 0 ? (
+				<Text
+					textAlign="center"
+					fontSize="25px"
+					py="20px"
+				>
+					No movies could be found using your queries, try different ones!
+				</Text>
+			) : null}
 		</Box>
 	);
 };

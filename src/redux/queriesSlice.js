@@ -1,40 +1,41 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
+	results: "all",
 	title: "",
-	genres: "",
+	genres: [],
 	cast: "",
 	year: "",
-	complexSearch: false,
 };
 
 const queriesSlice = createSlice({
 	name: "queries",
 	initialState,
 	reducers: {
-		setTitle(state, action) {
+		setResults(state, action) {
+			state.results = action.payload;
+		},
+		setComplexQueries(state, action) {
+			state.results = "complex";
+			state.genres = action.payload.selectedGenres;
+			state.cast = action.payload.castState;
+			state.year = action.payload.yearState;
+		},
+		setSimpleQueries(state, action) {
+			state.results = "simple";
 			state.title = action.payload;
 		},
 		setGenres(state, action) {
 			state.genres = action.payload;
 		},
-		setCast(state, action) {
-			state.cast = action.payload;
-		},
-		setYear(state, action) {
-			state.year = action.payload;
-		},
-		setComplexSearch(state) {
-			state.complexSearch = !state.complexSearch;
-		},
-		resetQueriesState(state) {
+		resetQueries(state) {
 			state.title = "";
-			state.year = "";
-			state.genres = "";
+			state.genres = [];
 			state.cast = "";
+			state.year = "";
 		},
 	},
 });
 
-export const {setTitle, setGenres, setCast, setYear, setComplexSearch, resetQueriesState} = queriesSlice.actions;
+export const {setResults, setComplexQueries, setSimpleQueries, resetQueries, setGenres} = queriesSlice.actions;
 export default queriesSlice;

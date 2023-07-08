@@ -3,48 +3,39 @@ import {useQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
-import {resetQueriesState} from "../redux/queriesSlice";
 import {apiAuthorization} from "../constants";
 import useSelectors from "../redux/useSelectors";
 import createComplexLink from "./createComplexLink";
 
 const useSearchBarComplex = () => {
-	const [paginationIndex, setPaginationIndex] = useState(1);
+	const [yearState, setYearState] = useState("");
+	const [castState, setCastState] = useState("");
 
-	const {results, year, cast, genres, data} = useSelectors();
+	const dispatch = useDispatch();
+
+	const {results, genres, data, year, cast, paginationIndex} = useSelectors();
 	const {
 		isLoading: isLoadingSearchComplex,
 		error: errorSearchComplex,
 		data: dataSearchComplex,
 		refetch: refetchSearchComplex,
 	} = useQuery({
-		queryKey: ["complexSearch", paginationIndex],
-		queryFn: () => fetchComplexSearch({year, cast, genres, paginationIndex}).then((res) => res.json()),
+		queryKey: ["complexSearch"],
+		queryFn: () =>
+			fetchComplexSearch({year, yearState, cast, castState, genres, num: paginationIndex}).then((res) => res.json()),
 		keepPreviousData: true,
 		enabled: false,
 		cacheTime: 0,
 	});
 
-	const dispatch = useDispatch();
-
 	useEffect(() => {
-		if (results === "complex") {
-			if (dataSearchComplex) {
-				dispatch(setData([...new Set([...data, ...dataSearchComplex.results])]));
-
-				if (paginationIndex < 5 && (!!year || !!cast || !!genres)) {
-					refetchSearchComplex();
-					setPaginationIndex(paginationIndex + 1);
-				} else {
-					dispatch(resetQueriesState());
-					setPaginationIndex(1);
-				}
-			}
+		if (results === "complex" && dataSearchComplex) {
+			dispatch(setData([...new Set([...data, ...dataSearchComplex.results])]));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataSearchComplex, paginationIndex]);
+	}, [dataSearchComplex]);
 
-	async function fetchComplexSearch({year, cast, genres, num}) {
+	async function fetchComplexSearch({year, yearState, cast, castState, genres, num}) {
 		const options = {
 			method: "GET",
 			headers: {
@@ -53,9 +44,10 @@ const useSearchBarComplex = () => {
 			},
 		};
 
-		console.log(genres);
+		const link = await createComplexLink({year, yearState, cast, castState, genres, num});
 
-		const link = await createComplexLink({year, cast, genres, num});
+		setCastState("");
+		setYearState("");
 
 		return fetch(link, options);
 	}
@@ -64,6 +56,11 @@ const useSearchBarComplex = () => {
 		refetchSearchComplex,
 		isLoadingSearchComplex,
 		errorSearchComplex,
+		dataSearchComplex,
+		yearState,
+		castState,
+		setYearState,
+		setCastState,
 	};
 };
 
