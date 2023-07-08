@@ -6,12 +6,14 @@ import useSelectors from "../redux/useSelectors";
 import useSearchBarComplex from "../api/useSearchBarComplex";
 import useSearchBarSimple from "../api/useSearchBarSimple";
 import useGetPlayingNow from "../api/useGetPlayingNow";
+import useFetchCollections from "../api/useFetchCollections";
 
 const usePagination = () => {
 	const {paginationSlice, data, movies, results} = useSelectors();
 	const {refetchSearchComplex} = useSearchBarComplex();
 	const {refetchSearchSimple} = useSearchBarSimple();
 	const {refetchPlaying} = useGetPlayingNow();
+	const {refetchCollections} = useFetchCollections();
 
 	const dispatch = useDispatch();
 
@@ -36,6 +38,10 @@ const usePagination = () => {
 
 			if (results === "all") {
 				refetchPlaying();
+			}
+
+			if (results === "collection") {
+				refetchCollections();
 			}
 		}
 	}

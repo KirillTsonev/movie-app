@@ -12,6 +12,8 @@ import theme from "../theme/theme";
 
 import {setupStore} from "../redux/store";
 
+const queryClient = new QueryClient();
+const store = setupStore();
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -26,10 +28,6 @@ const router = createBrowserRouter([
 		element: <Error404Page />,
 	},
 ]);
-
-const queryClient = new QueryClient();
-
-const store = setupStore();
 
 function App() {
 	return (

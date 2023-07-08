@@ -8,7 +8,7 @@ import img404Thumbnail from "../assets/img404Thumbnail.jpg";
 
 const MovieCard = ({movie, index}) => {
 	const {addToCollection} = useHandleCollection();
-	const {favorites} = useSelectors();
+	const {favorites, watchlist} = useSelectors();
 
 	useEffect(() => {
 		onOpen();
@@ -91,7 +91,12 @@ const MovieCard = ({movie, index}) => {
 					</Button>
 					<Button
 						w="40%"
-						onClick={() => addToCollection.mutate({id: movie.id, key: "watchlist"})}
+						variant={watchlist.includes(movie.id) ? "delete" : "solid"}
+						onClick={
+							watchlist.includes(movie.id)
+								? () => addToCollection.mutate({id: movie.id, key: "watchlist", bool: false})
+								: () => addToCollection.mutate({id: movie.id, key: "watchlist", bool: true})
+						}
 					>
 						Watchlist
 					</Button>

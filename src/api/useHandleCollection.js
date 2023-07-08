@@ -1,15 +1,17 @@
-import {useMutation} from "react-query";
+import {useMutation, useQueryClient} from "react-query";
 
 import {headers, accountID} from "../constants";
 
 import useFetchLists from "./useFetchLists";
 
 const useHandleCollection = () => {
-	const {refetchLists} = useFetchLists();
+	useFetchLists();
+
+	const queryClient = useQueryClient();
 
 	const addToCollection = useMutation({
 		mutationFn: ({id, key, bool}) => postToCollection({id, key, bool}),
-		onSuccess: refetchLists,
+		onSuccess: () => queryClient.refetchQueries(["fetchLists"]),
 	});
 
 	async function postToCollection({id, key, bool}) {

@@ -6,13 +6,12 @@ import {useLocation} from "react-router";
 import {setData} from "../redux/homeSlice";
 import {headers} from "../constants";
 import {setTotalResults} from "../redux/settingsSlice";
-import {resetQueries, setResults} from "../redux/queriesSlice";
-import {resetSettings} from "../redux/settingsSlice";
-import {resetHomeState} from "../redux/homeSlice";
+import useClearData from "../hooks/useClearData";
 import useSelectors from "../redux/useSelectors";
 
 const useGetPlayingNow = () => {
 	const {results, data, paginationIndex} = useSelectors();
+	const {clearData} = useClearData();
 	const {
 		isLoading: isLoadingPlaying,
 		error: errorPlaying,
@@ -35,7 +34,7 @@ const useGetPlayingNow = () => {
 		}
 
 		if (location.pathname === "/") {
-			clearSearch("all");
+			clearData("all", refetchPlaying);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -59,16 +58,7 @@ const useGetPlayingNow = () => {
 		);
 	}
 
-	async function clearSearch(string) {
-		dispatch(resetQueries());
-		dispatch(resetHomeState());
-		dispatch(resetSettings());
-		await dispatch(setResults(string));
-
-		refetchPlaying();
-	}
-
-	return {isLoadingPlaying, errorPlaying, refetchPlaying, clearSearch};
+	return {isLoadingPlaying, errorPlaying, refetchPlaying};
 };
 
 export default useGetPlayingNow;

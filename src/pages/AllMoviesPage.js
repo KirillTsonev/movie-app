@@ -8,6 +8,7 @@ import useSearchBarSimple from "../api/useSearchBarSimple";
 import useSearchBarComplex from "../api/useSearchBarComplex";
 import usePagination from "../hooks/usePagination";
 import useSelectors from "../redux/useSelectors";
+import useClearData from "../hooks/useClearData";
 
 import {setComplexSearch, setSearched} from "../redux/settingsSlice";
 
@@ -18,11 +19,12 @@ import MovieCard from "../components/MovieCard";
 import UpButton from "../components/UpButton";
 
 const AllMoviesPage = () => {
-	const {isLoadingPlaying, errorPlaying, clearSearch} = useGetPlayingNow();
+	const {isLoadingPlaying, errorPlaying, refetchPlaying} = useGetPlayingNow();
 	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
 	const {isLoadingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
 	const {movies, data, complexSearch, searched, totalResults} = useSelectors();
 	const {paginate} = usePagination();
+	const {clearData} = useClearData();
 
 	const dispatch = useDispatch();
 
@@ -74,7 +76,7 @@ const AllMoviesPage = () => {
 					left="calc(100% + 30px)"
 					top="50px"
 					display={searched ? "block" : "none"}
-					onClick={() => clearSearch("all")}
+					onClick={() => clearData("all", refetchPlaying)}
 				>
 					Clear Search
 				</Button>
