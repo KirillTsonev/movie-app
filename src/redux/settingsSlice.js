@@ -3,6 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
 	searched: false,
 	complexSearch: false,
+	totalResults: 0,
 };
 
 const settingsSlice = createSlice({
@@ -15,8 +16,11 @@ const settingsSlice = createSlice({
 		setSearched(state, action) {
 			state.searched = action.payload;
 		},
+		setTotalResults(state, action) {
+			state.totalResults = action.payload;
+		},
 	},
 });
 
-export const {setComplexSearch, setSearched} = settingsSlice.actions;
+export const {setComplexSearch, setSearched, setTotalResults} = settingsSlice.actions;
 export default settingsSlice;

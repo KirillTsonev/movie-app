@@ -3,6 +3,7 @@ import {useQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
+import {setTotalResults} from "../redux/settingsSlice";
 import {apiAuthorization} from "../constants";
 import useSelectors from "../redux/useSelectors";
 import createComplexLink from "./createComplexLink";
@@ -31,6 +32,7 @@ const useSearchBarComplex = () => {
 	useEffect(() => {
 		if (results === "complex" && dataSearchComplex) {
 			dispatch(setData([...new Set([...data, ...dataSearchComplex.results])]));
+			dispatch(setTotalResults(dataSearchComplex.total_results));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSearchComplex]);
@@ -45,9 +47,6 @@ const useSearchBarComplex = () => {
 		};
 
 		const link = await createComplexLink({year, yearState, cast, castState, genres, num});
-
-		setCastState("");
-		setYearState("");
 
 		return fetch(link, options);
 	}

@@ -20,7 +20,7 @@ const AllMoviesPage = () => {
 	const {isLoadingPlaying, errorPlaying, setPaginationIndex} = useGetPlayingNow();
 	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
 	const {isLoadingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
-	const {movies, data, complexSearch, searched} = useSelectors();
+	const {movies, data, complexSearch, searched, totalResults} = useSelectors();
 	const {paginate} = usePagination();
 
 	const dispatch = useDispatch();
@@ -128,7 +128,7 @@ const AllMoviesPage = () => {
 					>
 						{movies && renderMovies(movies)}
 					</Box>
-					{movies.length < 100 && movies.length < data.length && (
+					{movies.length < 100 && movies.length < totalResults && (
 						<Button
 							display="block"
 							mx="auto"

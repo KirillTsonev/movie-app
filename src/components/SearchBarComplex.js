@@ -13,45 +13,27 @@ import {
 	PopoverArrow,
 	useDisclosure,
 } from "@chakra-ui/react";
-import {useDispatch} from "react-redux";
 
 import useFetchGenres from "../api/useFetchGenres";
 import useCheckBoxes from "../hooks/useCheckBoxes";
 import useSearchBarComplex from "../api/useSearchBarComplex";
-import {setComplexQueries, resetQueries} from "../redux/queriesSlice";
-import {resetHomeState} from "../redux/homeSlice";
+import useSelectors from "../redux/useSelectors";
+import useHandleComplexSearch from "../hooks/useHandleComplexSearch";
 
-const SearchBarComplex = ({complexSearch, setSearched}) => {
+const SearchBarComplex = () => {
 	const {dataGenres} = useFetchGenres();
-	const {castState, yearState, setCastState, setYearState, refetchSearchComplex} = useSearchBarComplex();
-	const {selectedGenres, setSelectedGenres, setChecks, checks, handleCheckGenre} = useCheckBoxes();
+	const {castState, yearState, setCastState, setYearState} = useSearchBarComplex();
+	const {selectedGenres, checks, handleCheckGenre} = useCheckBoxes();
 	const {onOpen} = useDisclosure();
-
-	const dispatch = useDispatch();
-
-	async function handleSearch(e) {
-		e.preventDefault();
-
-		if ((yearState >= 1700 && yearState <= 2023) || !!castState || selectedGenres.length > 0) {
-			await dispatch(resetQueries());
-			await dispatch(resetHomeState());
-			await dispatch(setComplexQueries({selectedGenres, castState, yearState}));
-
-			setSearched(true);
-
-			refetchSearchComplex();
-
-			setSelectedGenres([]);
-			setChecks(checks.map(() => false));
-		}
-	}
+	const {complexSearch} = useSelectors();
+	const {handleSearch} = useHandleComplexSearch();
 
 	return (
 		<Box
 			display={complexSearch ? "flex" : "none"}
 			w="85%"
 			as="form"
-			onSubmit={(e) => handleSearch(e)}
+			onSubmit={(e) => handleSearch({e, selectedGenres, castState, yearState, setCastState, setYearState})}
 		>
 			<Box
 				w="100%"

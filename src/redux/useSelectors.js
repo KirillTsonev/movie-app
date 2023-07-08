@@ -14,6 +14,7 @@ const useSelectors = () => {
 
 	const complexSearch = useSelector((state) => state.settings.complexSearch);
 	const searched = useSelector((state) => state.settings.searched);
+	const totalResults = useSelector((state) => state.settings.totalResults);
 
 	return {
 		results,
@@ -27,6 +28,7 @@ const useSelectors = () => {
 		data,
 		complexSearch,
 		searched,
+		totalResults,
 	};
 };
 
