@@ -49,13 +49,6 @@ const useFetchLists = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		refetchFavorite();
-		refetchRated();
-		refetchWatchlist();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useEffect(() => {
 		dataFavorite?.pages.forEach((page) =>
 			dispatch(setFavorite([...new Set([...favorite, ...page.results.map((a) => a.id)])]))
 		);

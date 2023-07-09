@@ -4,7 +4,11 @@ import {Box, Button} from "@chakra-ui/react";
 
 import ThemeSwitch from "./ThemeSwitch";
 
+import useFetchLists from "../api/useFetchLists";
+
 const NavBar = () => {
+	const {} = useFetchLists();
+
 	return (
 		<Box
 			as="nav"

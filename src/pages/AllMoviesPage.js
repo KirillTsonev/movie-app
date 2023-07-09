@@ -29,7 +29,7 @@ const AllMoviesPage = () => {
 	const dispatch = useDispatch();
 
 	//////disable buttons while fetching
-	///color is already rated
+	///color when already rated
 	///live filtering based on collection switch
 	///cant add to watchlist if rated
 

@@ -5,6 +5,8 @@ import {headers, accountID} from "../constants";
 import {setFavorite, setWatchList} from "../redux/collectionsSlice";
 
 import useSelectors from "../redux/useSelectors";
+import {setMovies} from "../redux/homeSlice";
+import {setTotalResults} from "../redux/settingsSlice";
 
 const useHandleCollection = () => {
 	const dispatch = useDispatch();
@@ -12,7 +14,7 @@ const useHandleCollection = () => {
 		mutationFn: ({id, key, bool}) => postToCollection({id, key, bool}),
 	});
 
-	const {favorite, watchlist} = useSelectors();
+	const {favorite, watchlist, movies} = useSelectors();
 
 	async function postToCollection({id, key, bool}) {
 		const options = {
@@ -32,13 +34,30 @@ const useHandleCollection = () => {
 	}
 
 	//If these functions are refactored to not repeat code, it would be one function which would take in 6 arguments so I left it as is
-	function handleCollectionFavorite(id) {
+	function handleCollectionFavorite(id, refetch) {
 		if (favorite.includes(id)) {
 			addToCollection.mutate(
 				{id, key: "favorite", bool: false},
 				{
-					onSuccess: () => {
+					onSettled: () => {
 						dispatch(setFavorite(favorite.filter((a) => a !== id)));
+
+						dispatch(setMovies(movies.filter((a) => a.id !== id)));
+						dispatch(setTotalResults(movies.length - 1));
+					},
+				}
+			);
+		} else if (watchlist.includes(id)) {
+			addToCollection.mutate({id, key: "favorite", bool: true});
+			addToCollection.mutate(
+				{id, key: "watchlist", bool: false},
+				{
+					onSettled: () => {
+						dispatch(setFavorite([...favorite, id]));
+						dispatch(setWatchList(watchlist.filter((a) => a !== id)));
+
+						dispatch(setMovies(movies.filter((a) => a.id !== id)));
+						dispatch(setTotalResults(movies.length - 1));
 					},
 				}
 			);
@@ -48,20 +67,36 @@ const useHandleCollection = () => {
 				{
 					onSuccess: () => {
 						dispatch(setFavorite([...favorite, id]));
-						dispatch(setWatchList(watchlist.filter((a) => a !== id)));
 					},
 				}
 			);
 		}
 	}
 
-	function handleCollectionWatchlist(id) {
+	async function handleCollectionWatchlist(id) {
 		if (watchlist.includes(id)) {
 			addToCollection.mutate(
 				{id, key: "watchlist", bool: false},
 				{
-					onSuccess: () => {
+					onSettled: () => {
 						dispatch(setWatchList(watchlist.filter((a) => a !== id)));
+
+						dispatch(setMovies(movies.filter((a) => a.id !== id)));
+						dispatch(setTotalResults(movies.length - 1));
+					},
+				}
+			);
+		} else if (favorite.includes(id)) {
+			addToCollection.mutate({id, key: "favorite", bool: false});
+			addToCollection.mutate(
+				{id, key: "watchlist", bool: true},
+				{
+					onSettled: async () => {
+						dispatch(setWatchList([...watchlist, id]));
+						dispatch(setFavorite(favorite.filter((a) => a !== id)));
+
+						dispatch(setMovies(movies.filter((a) => a.id !== id)));
+						dispatch(setTotalResults(movies.length - 1));
 					},
 				}
 			);
@@ -71,7 +106,6 @@ const useHandleCollection = () => {
 				{
 					onSuccess: () => {
 						dispatch(setWatchList([...watchlist, id]));
-						dispatch(setFavorite(favorite.filter((a) => a !== id)));
 					},
 				}
 			);

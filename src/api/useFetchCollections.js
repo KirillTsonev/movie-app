@@ -6,13 +6,10 @@ import {useLocation} from "react-router";
 import {headers, accountID} from "../constants";
 import useSelectors from "../redux/useSelectors";
 import useClearData from "../hooks/useClearData";
-import useFetchLists from "./useFetchLists";
 import {setData} from "../redux/homeSlice";
 import {setTotalResults} from "../redux/settingsSlice";
 
 const useFetchCollections = () => {
-	useFetchLists();
-
 	const [currentCollection, setCurrentCollection] = useState("favorite");
 
 	const {results, data, paginationIndex} = useSelectors();
