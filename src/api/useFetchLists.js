@@ -9,41 +9,29 @@ import useSelectors from "../redux/useSelectors";
 
 const useFetchLists = () => {
 	const {favorite, watchlist, rated} = useSelectors();
-	const {
-		data: dataFavorite,
-		fetchNextPage: fetchNextPageFavorite,
-		refetch: refetchFavorite,
-	} = useInfiniteQuery({
+	const {data: dataFavorite, fetchNextPage: fetchNextPageFavorite} = useInfiniteQuery({
 		queryKey: ["fetchFavorites"],
 		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "favorite"),
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
 		},
-		// enabled: false,
+		enabled: false,
 	});
-	const {
-		data: dataWatchlist,
-		fetchNextPage: fetchNextPageWatchlist,
-		refetch: refetchWatchlist,
-	} = useInfiniteQuery({
+	const {data: dataWatchlist, fetchNextPage: fetchNextPageWatchlist} = useInfiniteQuery({
 		queryKey: ["fetchWatchlist"],
 		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "watchlist"),
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
 		},
-		// enabled: false,
+		enabled: false,
 	});
-	const {
-		data: dataRated,
-		fetchNextPage: fetchNextPageRated,
-		refetch: refetchRated,
-	} = useInfiniteQuery({
+	const {data: dataRated, fetchNextPage: fetchNextPageRated} = useInfiniteQuery({
 		queryKey: ["fetchRated"],
 		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "rated"),
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
 		},
-		// enabled: false,
+		enabled: false,
 	});
 
 	const dispatch = useDispatch();

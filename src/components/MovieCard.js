@@ -15,6 +15,8 @@ import {
 
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
 
+import ModalDetails from "./ModalDetails";
+
 import StarRating from "./StarRating";
 import FavoriteSvg from "./svg/FavoriteSvg";
 import RateSvg from "./svg/RateSvg";
@@ -44,7 +46,7 @@ const MovieCard = ({movie, index}) => {
 				alignItems="center"
 				border="2px solid"
 				borderRadius="12px"
-				h="360px"
+				h="330px"
 			>
 				<Image
 					src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
@@ -57,8 +59,8 @@ const MovieCard = ({movie, index}) => {
 				/>
 				<Box
 					display="flex"
-					h="80px"
-					px="5px"
+					h="65px"
+					py="5px"
 					alignItems="center"
 				>
 					<Text
@@ -71,7 +73,7 @@ const MovieCard = ({movie, index}) => {
 				<Box
 					display="flex"
 					justifyContent="space-around"
-					mt="10px"
+					mb="20px"
 					w="200px"
 				>
 					<FavoriteSvg id={movie.id} />
@@ -98,8 +100,13 @@ const MovieCard = ({movie, index}) => {
 						</PopoverContent>
 					</Popover>
 				</Box>
-
-				<Button mt="25px">Details</Button>
+				<ModalDetails id={movie.id} />
+				{/* <Button
+					mt="25px"
+					onClick={() => setId(movie.id)}
+				>
+					Details
+				</Button> */}
 			</Box>
 		</ScaleFade>
 	);

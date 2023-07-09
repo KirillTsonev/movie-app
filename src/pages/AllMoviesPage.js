@@ -111,9 +111,9 @@ const AllMoviesPage = () => {
 				>
 					<Box
 						display="grid"
-						gridTemplate="360px / repeat(5, 220px)"
+						gridTemplate="330px / repeat(5, 220px)"
 						justifyContent="space-between"
-						gridAutoRows="360px"
+						gridAutoRows="330px"
 						rowGap="10px"
 					>
 						{movies && renderMovies(movies)}

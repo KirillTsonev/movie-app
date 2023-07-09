@@ -13,7 +13,7 @@ import useClearData from "../hooks/useClearData";
 
 const CollectionsPage = () => {
 	const {movies, data, totalResults, paginationIndex} = useSelectors();
-	const {errorCollections, isRefetchingCollections, setCurrentCollection, currentCollection, refetchCollections} =
+	const {errorCollections, isFetchingCollections, setCurrentCollection, currentCollection, refetchCollections} =
 		useFetchCollections();
 	const {paginate} = usePagination();
 	const {clearData} = useClearData();
@@ -100,7 +100,7 @@ const CollectionsPage = () => {
 					Rated
 				</Button>
 			</Box>
-			{isRefetchingCollections && paginationIndex === 1 ? (
+			{isFetchingCollections && paginationIndex === 1 ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -123,9 +123,9 @@ const CollectionsPage = () => {
 				>
 					<Box
 						display="grid"
-						gridTemplate="360px / repeat(5, 220px)"
+						gridTemplate="330px / repeat(5, 220px)"
 						justifyContent="space-between"
-						gridAutoRows="360px"
+						gridAutoRows="330px"
 						rowGap="10px"
 					>
 						{movies && renderMovies(movies)}

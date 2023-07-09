@@ -1,9 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-	favorite: [],
-	watchlist: [],
-	rated: [],
+	favorite: "",
+	watchlist: "",
+	rated: "",
+	details: "",
 };
 
 const collectionsSlice = createSlice({
@@ -19,11 +20,14 @@ const collectionsSlice = createSlice({
 		setRated(state, action) {
 			state.rated = action.payload;
 		},
+		setDetails(state, action) {
+			state.details = action.payload;
+		},
 		resetCollectionsState() {
 			return initialState;
 		},
 	},
 });
 
-export const {setFavorite, setWatchList, setRated, resetCollectionsState} = collectionsSlice.actions;
+export const {setFavorite, setWatchList, setRated, setDetails, resetCollectionsState} = collectionsSlice.actions;
 export default collectionsSlice;

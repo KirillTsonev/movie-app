@@ -14,7 +14,7 @@ const useHandleCollection = () => {
 		mutationFn: ({id, key, bool}) => postToCollection({id, key, bool}),
 	});
 
-	const {favorite, watchlist, movies} = useSelectors();
+	const {favorite, watchlist, movies, results} = useSelectors();
 
 	async function postToCollection({id, key, bool}) {
 		const options = {
@@ -34,7 +34,7 @@ const useHandleCollection = () => {
 	}
 
 	//If these functions are refactored to not repeat code, it would be one function which would take in 6 arguments so I left it as is
-	function handleCollectionFavorite(id, refetch) {
+	function handleCollectionFavorite(id) {
 		if (favorite.includes(id)) {
 			addToCollection.mutate(
 				{id, key: "favorite", bool: false},
@@ -42,8 +42,9 @@ const useHandleCollection = () => {
 					onSettled: () => {
 						dispatch(setFavorite(favorite.filter((a) => a !== id)));
 
-						dispatch(setMovies(movies.filter((a) => a.id !== id)));
-						dispatch(setTotalResults(movies.length - 1));
+						if (results === "collection") {
+							filterLocally(id);
+						}
 					},
 				}
 			);
@@ -56,8 +57,7 @@ const useHandleCollection = () => {
 						dispatch(setFavorite([...favorite, id]));
 						dispatch(setWatchList(watchlist.filter((a) => a !== id)));
 
-						dispatch(setMovies(movies.filter((a) => a.id !== id)));
-						dispatch(setTotalResults(movies.length - 1));
+						filterLocally(id);
 					},
 				}
 			);
@@ -81,8 +81,9 @@ const useHandleCollection = () => {
 					onSettled: () => {
 						dispatch(setWatchList(watchlist.filter((a) => a !== id)));
 
-						dispatch(setMovies(movies.filter((a) => a.id !== id)));
-						dispatch(setTotalResults(movies.length - 1));
+						if (results === "collection") {
+							filterLocally(id);
+						}
 					},
 				}
 			);
@@ -95,8 +96,7 @@ const useHandleCollection = () => {
 						dispatch(setWatchList([...watchlist, id]));
 						dispatch(setFavorite(favorite.filter((a) => a !== id)));
 
-						dispatch(setMovies(movies.filter((a) => a.id !== id)));
-						dispatch(setTotalResults(movies.length - 1));
+						filterLocally(id);
 					},
 				}
 			);
@@ -110,6 +110,11 @@ const useHandleCollection = () => {
 				}
 			);
 		}
+	}
+
+	function filterLocally(id) {
+		dispatch(setMovies(movies.filter((a) => a.id !== id)));
+		dispatch(setTotalResults(movies.length - 1));
 	}
 
 	return {handleCollectionFavorite, handleCollectionWatchlist, addToCollection};

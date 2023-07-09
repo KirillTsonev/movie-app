@@ -1,8 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-	movies: [],
-	data: [],
+	movies: "",
+	data: "",
 	paginationSlice: 10,
 	paginationIndex: 1,
 	totalResults: 0,

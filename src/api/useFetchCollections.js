@@ -15,7 +15,7 @@ const useFetchCollections = () => {
 	const {results, data, paginationIndex} = useSelectors();
 	const {clearData} = useClearData();
 	const {
-		isRefetching: isRefetchingCollections,
+		isFetching: isFetchingCollections,
 		error: errorCollections,
 		data: dataCollections,
 		refetch: refetchCollections,
@@ -56,7 +56,7 @@ const useFetchCollections = () => {
 		).then((response) => response.json());
 	}
 
-	return {isRefetchingCollections, errorCollections, refetchCollections, setCurrentCollection, currentCollection};
+	return {isFetchingCollections, errorCollections, refetchCollections, setCurrentCollection, currentCollection};
 };
 
 export default useFetchCollections;

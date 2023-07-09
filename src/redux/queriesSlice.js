@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
 	results: "all",
 	title: "",
-	genres: [],
+	genres: "",
 	cast: "",
 	year: "",
 };

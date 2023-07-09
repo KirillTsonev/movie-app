@@ -16,11 +16,10 @@ const useSelectors = () => {
 	const searched = useSelector((state) => state.settings.searched);
 	const totalResults = useSelector((state) => state.settings.totalResults);
 
-	const dataCollectionsStore = useSelector((state) => state.collections.dataCollectionsStore);
-	const moviesCollections = useSelector((state) => state.collections.moviesCollections);
 	const favorite = useSelector((state) => state.collections.favorite);
 	const watchlist = useSelector((state) => state.collections.watchlist);
 	const rated = useSelector((state) => state.collections.rated);
+	const details = useSelector((state) => state.collections.details);
 
 	return {
 		results,
@@ -35,11 +34,10 @@ const useSelectors = () => {
 		complexSearch,
 		searched,
 		totalResults,
-		dataCollectionsStore,
-		moviesCollections,
 		favorite,
 		watchlist,
 		rated,
+		details,
 	};
 };
 
