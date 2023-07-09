@@ -16,7 +16,7 @@ const useSearchBarComplex = () => {
 
 	const {results, genres, data, year, cast, paginationIndex} = useSelectors();
 	const {
-		isLoading: isLoadingSearchComplex,
+		isFetching: isFetchingSearchComplex,
 		error: errorSearchComplex,
 		data: dataSearchComplex,
 		refetch: refetchSearchComplex,
@@ -49,7 +49,7 @@ const useSearchBarComplex = () => {
 
 	return {
 		refetchSearchComplex,
-		isLoadingSearchComplex,
+		isFetchingSearchComplex,
 		errorSearchComplex,
 		dataSearchComplex,
 		yearState,

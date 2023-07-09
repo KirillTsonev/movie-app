@@ -11,6 +11,9 @@ const Button = defineStyleConfig({
 				boxShadow:
 					"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
 			},
+			_active: {
+				background: "#6deb28",
+			},
 		},
 		delete: {
 			background: "red",
@@ -19,6 +22,9 @@ const Button = defineStyleConfig({
 				transform: "translateX(5px) translateY(-5px)",
 				boxShadow:
 					"-1px 1px 1px #932c00, -2px 2px 1px #932c00, -3px 3px 1px #932c00, -4px 4px 1px #932c00, -5px 5px 1px #932c00",
+			},
+			_active: {
+				background: "#eb286a",
 			},
 		},
 	},

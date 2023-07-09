@@ -1,27 +1,24 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-	moviesCollections: [],
-	dataCollectionsStore: [],
-	favorites: [],
+	moviesFavorite: [],
+	favorite: [],
 	watchlist: [],
+	rated: [],
 };
 
 const collectionsSlice = createSlice({
 	name: "collections",
 	initialState,
 	reducers: {
-		setMoviesCollections(state, action) {
-			state.moviesCollections = action.payload;
-		},
-		setDataCollectionsStore(state, action) {
-			state.dataCollectionsStore = action.payload;
-		},
-		setFavorites(state, action) {
-			state.favorites = action.payload;
+		setFavorite(state, action) {
+			state.favorite = action.payload;
 		},
 		setWatchList(state, action) {
 			state.watchlist = action.payload;
+		},
+		setRated(state, action) {
+			state.rated = action.payload;
 		},
 		resetCollectionsState() {
 			return initialState;
@@ -29,6 +26,5 @@ const collectionsSlice = createSlice({
 	},
 });
 
-export const {setMoviesCollections, setDataCollectionsStore, setFavorites, setWatchList, resetCollectionsState} =
-	collectionsSlice.actions;
+export const {setFavorite, setWatchList, setRated, resetCollectionsState} = collectionsSlice.actions;
 export default collectionsSlice;

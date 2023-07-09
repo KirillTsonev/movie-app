@@ -1,64 +1,62 @@
-import {useEffect, useState} from "react";
-import {useQuery} from "react-query";
+import {useEffect} from "react";
+import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {accountID, headers} from "../constants";
-import {setFavorites} from "../redux/collectionsSlice";
+import {setFavorite, setWatchList} from "../redux/collectionsSlice";
 
 import useSelectors from "../redux/useSelectors";
 
 const useFetchLists = () => {
-	const [lastPage, setLastPage] = useState();
-	const [page, setPage] = useState(1);
-
-	const {favorites} = useSelectors();
-	const {
-		isLoading: isLoadingLists,
-		error: errorLists,
-		data: dataLists,
-		refetch: refetchLists,
-	} = useQuery({
-		queryKey: ["fetchLists", page],
-		queryFn: () => fetchLists(page),
-		// keepPreviousData: true,
-		// enabled: false,
-		// cacheTime: 0,
+	const {favorite, watchlist} = useSelectors();
+	const {data: dataFavorite, fetchNextPage: fetchNextPageFavorite} = useInfiniteQuery({
+		queryKey: ["fetchFavorites"],
+		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "favorite"),
+		getNextPageParam: (lastPage) => {
+			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
+		},
+	});
+	const {data: dataWatchlist, fetchNextPage: fetchNextPageWatchlist} = useInfiniteQuery({
+		queryKey: ["fetchWatchlist"],
+		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "watchlist"),
+		getNextPageParam: (lastPage) => {
+			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
+		},
 	});
 
 	const dispatch = useDispatch();
 
-	// useEffect(() => {
-	// 	refetchLists();
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, []);
+	useEffect(() => {
+		dataFavorite?.pages.forEach((page) =>
+			dispatch(setFavorite([...new Set([...favorite, ...page.results.map((a) => a.id)])]))
+		);
+
+		fetchNextPageFavorite();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dataFavorite]);
 
 	useEffect(() => {
-		if (dataLists) {
-			setLastPage(dataLists.total_pages);
+		dataWatchlist?.pages.forEach((page) =>
+			dispatch(setWatchList([...new Set([...watchlist, ...page.results.map((a) => a.id)])]))
+		);
 
-			// console.log(dataLists.results);
-			dispatch(setFavorites([...new Set([...favorites, ...dataLists.results.map((a) => a.id)])]));
-
-			if (page < lastPage) {
-				setPage(page + 1);
-			}
-		}
+		fetchNextPageWatchlist();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataLists, page, lastPage]);
+	}, [dataWatchlist]);
 
-	async function fetchLists(num) {
+	async function fetchLists(pageParam, collection) {
 		const options = {
 			method: "GET",
 			headers,
 		};
 
 		return fetch(
-			`https://api.themoviedb.org/3/account/${accountID}/favorite/movies?language=en-US&page=${num}&sort_by=created_at.asc`,
+			`https://api.themoviedb.org/3/account/${accountID}/${collection}/movies?language=en-US&page=${pageParam}&sort_by=created_at.asc`,
 			options
 		).then((response) => response.json());
 	}
 
-	return {refetchLists};
+	return {};
 };
 
 export default useFetchLists;

@@ -13,7 +13,7 @@ const useGetPlayingNow = () => {
 	const {results, data, paginationIndex} = useSelectors();
 	const {clearData} = useClearData();
 	const {
-		isLoading: isLoadingPlaying,
+		isFetching: isFetchingPlaying,
 		error: errorPlaying,
 		data: dataPlaying,
 		refetch: refetchPlaying,
@@ -58,7 +58,7 @@ const useGetPlayingNow = () => {
 		);
 	}
 
-	return {isLoadingPlaying, errorPlaying, refetchPlaying};
+	return {isFetchingPlaying, errorPlaying, refetchPlaying};
 };
 
 export default useGetPlayingNow;

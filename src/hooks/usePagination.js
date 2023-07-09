@@ -36,13 +36,8 @@ const usePagination = () => {
 				refetchSearchSimple();
 			}
 
-			if (results === "all") {
-				refetchPlaying();
-			}
-
-			if (results === "collection") {
-				refetchCollections();
-			}
+			refetchPlaying();
+			refetchCollections();
 		}
 	}
 

@@ -1,21 +1,20 @@
 import React, {useEffect} from "react";
 import {Box, Text, Image, Button, ScaleFade, useDisclosure} from "@chakra-ui/react";
 
-import useHandleCollection from "../api/useHandleCollection";
 import useSelectors from "../redux/useSelectors";
+import useHandleCollection from "../api/useHandleCollection";
 
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
 
 const MovieCard = ({movie, index}) => {
-	const {addToCollection} = useHandleCollection();
-	const {favorites, watchlist} = useSelectors();
+	const {favorite, watchlist} = useSelectors();
+	const {isOpen, onOpen} = useDisclosure();
+	const {handleCollectionFavorite, handleCollectionWatchlist} = useHandleCollection();
 
 	useEffect(() => {
 		onOpen();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const {isOpen, onOpen} = useDisclosure();
 
 	return (
 		<ScaleFade
@@ -24,23 +23,7 @@ const MovieCard = ({movie, index}) => {
 			style={
 				index < 10
 					? {transition: `all ${0.3 + index * 0.1}s`}
-					: index > 9 && index < 20
-					? {transition: `all ${0.3 + (index - 10) * 0.1}s`}
-					: index > 19 && index < 30
-					? {transition: `all ${0.3 + (index - 20) * 0.1}s`}
-					: index > 29 && index < 40
-					? {transition: `all ${0.3 + (index - 30) * 0.1}s`}
-					: index > 39 && index < 50
-					? {transition: `all ${0.3 + (index - 40) * 0.1}s`}
-					: index > 49 && index < 60
-					? {transition: `all ${0.3 + (index - 50) * 0.1}s`}
-					: index > 59 && index < 70
-					? {transition: `all ${0.3 + (index - 60) * 0.1}s`}
-					: index > 69 && index < 80
-					? {transition: `all ${0.3 + (index - 70) * 0.1}s`}
-					: index > 79 && index < 90
-					? {transition: `all ${0.3 + (index - 80) * 0.1}s`}
-					: {transition: `all ${0.3 + (index - 90) * 0.1}s`}
+					: {transition: `all ${0.3 + (index - `${index.toString()[0]}0`) * 0.1}s`}
 			}
 		>
 			<Box
@@ -77,28 +60,21 @@ const MovieCard = ({movie, index}) => {
 					display="flex"
 					justifyContent="space-around"
 					mt="10px"
+					w="200px"
 				>
 					<Button
-						w="40%"
-						variant={favorites.includes(movie.id) ? "delete" : "solid"}
-						onClick={
-							favorites.includes(movie.id)
-								? () => addToCollection.mutate({id: movie.id, key: "favorite", bool: false})
-								: () => addToCollection.mutate({id: movie.id, key: "favorite", bool: true})
-						}
+						w="93px"
+						variant={favorite.includes(movie.id) ? "delete" : "solid"}
+						onClick={() => handleCollectionFavorite(movie.id)}
 					>
-						Favorites
+						{favorite.includes(movie.id) ? "- Favorites" : "+ Favorites"}
 					</Button>
 					<Button
-						w="40%"
+						w="93px"
 						variant={watchlist.includes(movie.id) ? "delete" : "solid"}
-						onClick={
-							watchlist.includes(movie.id)
-								? () => addToCollection.mutate({id: movie.id, key: "watchlist", bool: false})
-								: () => addToCollection.mutate({id: movie.id, key: "watchlist", bool: true})
-						}
+						onClick={() => handleCollectionWatchlist(movie.id)}
 					>
-						Watchlist
+						{watchlist.includes(movie.id) ? "- Watchlsit" : "+ Watchlsit"}
 					</Button>
 				</Box>
 				<Button mt="10px">Details</Button>

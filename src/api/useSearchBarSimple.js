@@ -12,7 +12,7 @@ const useSearchBarSimple = () => {
 
 	const {results, data, title, paginationIndex} = useSelectors();
 	const {
-		isLoading: isLoadingSearchSimple,
+		isFetching: isFetchingSearchSimple,
 		error: errorSearchSimple,
 		data: dataSearchSimple,
 		refetch: refetchSearchSimple,
@@ -50,10 +50,11 @@ const useSearchBarSimple = () => {
 
 	return {
 		refetchSearchSimple,
-		isLoadingSearchSimple,
+		isFetchingSearchSimple,
 		errorSearchSimple,
 		titleState,
 		setTitleState,
+		dataSearchSimple,
 	};
 };
 

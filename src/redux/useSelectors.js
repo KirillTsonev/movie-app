@@ -18,7 +18,7 @@ const useSelectors = () => {
 
 	const dataCollectionsStore = useSelector((state) => state.collections.dataCollectionsStore);
 	const moviesCollections = useSelector((state) => state.collections.moviesCollections);
-	const favorites = useSelector((state) => state.collections.favorites);
+	const favorite = useSelector((state) => state.collections.favorite);
 	const watchlist = useSelector((state) => state.collections.watchlist);
 
 	return {
@@ -36,7 +36,7 @@ const useSelectors = () => {
 		totalResults,
 		dataCollectionsStore,
 		moviesCollections,
-		favorites,
+		favorite,
 		watchlist,
 	};
 };

@@ -9,11 +9,20 @@ import useFetchCollections from "../api/useFetchCollections";
 import NavBar from "../components/NavBar";
 import MovieCard from "../components/MovieCard";
 import UpButton from "../components/UpButton";
+import useClearData from "../hooks/useClearData";
 
 const CollectionsPage = () => {
 	const {movies, data, totalResults} = useSelectors();
-	const {errorCollections, isLoadingCollections} = useFetchCollections();
+	const {errorCollections, isLoadingCollections, setCurrentCollection, currentCollection, refetchCollections} =
+		useFetchCollections();
 	const {paginate} = usePagination();
+	const {clearData} = useClearData();
+
+	function filterCollections(collection) {
+		clearData("collection", refetchCollections);
+
+		setCurrentCollection(collection);
+	}
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -38,7 +47,59 @@ const CollectionsPage = () => {
 			mx="auto"
 		>
 			<NavBar />
-
+			<Box
+				display="flex"
+				justifyContent="space-around"
+			>
+				<Button
+					w="30%"
+					style={
+						currentCollection === "favorite"
+							? {
+									background: "#17b824",
+									transform: "translateX(5px) translateY(-5px)",
+									boxShadow:
+										"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
+							  }
+							: null
+					}
+					onClick={() => filterCollections("favorite")}
+				>
+					Favorites
+				</Button>
+				<Button
+					w="30%"
+					style={
+						currentCollection === "watchlist"
+							? {
+									background: "#17b824",
+									transform: "translateX(5px) translateY(-5px)",
+									boxShadow:
+										"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
+							  }
+							: null
+					}
+					onClick={() => filterCollections("watchlist")}
+				>
+					Watchlsit
+				</Button>
+				<Button
+					w="30%"
+					style={
+						currentCollection === "rated"
+							? {
+									background: "#17b824",
+									transform: "translateX(5px) translateY(-5px)",
+									boxShadow:
+										"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
+							  }
+							: null
+					}
+					onClick={() => filterCollections("rated")}
+				>
+					Rated
+				</Button>
+			</Box>
 			{isLoadingCollections ? (
 				<Box
 					display="flex"

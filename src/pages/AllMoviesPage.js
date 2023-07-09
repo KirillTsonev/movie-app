@@ -19,10 +19,10 @@ import MovieCard from "../components/MovieCard";
 import UpButton from "../components/UpButton";
 
 const AllMoviesPage = () => {
-	const {isLoadingPlaying, errorPlaying, refetchPlaying} = useGetPlayingNow();
-	const {isLoadingSearchSimple, errorSearchSimple} = useSearchBarSimple();
-	const {isLoadingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
-	const {movies, data, complexSearch, searched, totalResults} = useSelectors();
+	const {isFetchingPlaying, errorPlaying, refetchPlaying} = useGetPlayingNow();
+	const {isFetchingSearchSimple, errorSearchSimple, dataSearchSimple} = useSearchBarSimple();
+	const {isFetchingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
+	const {movies, data, complexSearch, searched, totalResults, paginationIndex} = useSelectors();
 	const {paginate} = usePagination();
 	const {clearData} = useClearData();
 
@@ -81,7 +81,7 @@ const AllMoviesPage = () => {
 					Clear Search
 				</Button>
 			</Box>
-			{isLoadingPlaying || isLoadingSearchSimple || isLoadingSearchComplex ? (
+			{(isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex) && paginationIndex === 1 ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -89,15 +89,7 @@ const AllMoviesPage = () => {
 				>
 					<SpinnerDotted size={"50%"} />
 				</Box>
-			) : errorPlaying ? (
-				<Text
-					textAlign="center"
-					fontSize="25px"
-					py="20px"
-				>
-					There is a problem with our servers, please try again later!
-				</Text>
-			) : errorSearchSimple || errorSearchComplex ? (
+			) : errorPlaying || errorSearchSimple || errorSearchComplex ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"
@@ -132,7 +124,7 @@ const AllMoviesPage = () => {
 						</Button>
 					)}
 				</Box>
-			) : dataSearchComplex?.results.length === 0 ? (
+			) : dataSearchComplex?.results.length === 0 || dataSearchSimple?.results.length === 0 ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"
