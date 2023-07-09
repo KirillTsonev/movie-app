@@ -20,6 +20,7 @@ const useSelectors = () => {
 	const moviesCollections = useSelector((state) => state.collections.moviesCollections);
 	const favorite = useSelector((state) => state.collections.favorite);
 	const watchlist = useSelector((state) => state.collections.watchlist);
+	const rated = useSelector((state) => state.collections.rated);
 
 	return {
 		results,
@@ -38,6 +39,7 @@ const useSelectors = () => {
 		moviesCollections,
 		favorite,
 		watchlist,
+		rated,
 	};
 };
 

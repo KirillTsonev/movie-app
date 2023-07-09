@@ -4,12 +4,9 @@ import {useDispatch} from "react-redux";
 import {headers, accountID} from "../constants";
 import {setFavorite, setWatchList} from "../redux/collectionsSlice";
 
-import useFetchLists from "./useFetchLists";
 import useSelectors from "../redux/useSelectors";
 
 const useHandleCollection = () => {
-	useFetchLists();
-
 	const dispatch = useDispatch();
 	const addToCollection = useMutation({
 		mutationFn: ({id, key, bool}) => postToCollection({id, key, bool}),
@@ -81,7 +78,7 @@ const useHandleCollection = () => {
 		}
 	}
 
-	return {handleCollectionFavorite, handleCollectionWatchlist};
+	return {handleCollectionFavorite, handleCollectionWatchlist, addToCollection};
 };
 
 export default useHandleCollection;

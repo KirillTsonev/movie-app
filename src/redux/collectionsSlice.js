@@ -1,7 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-	moviesFavorite: [],
 	favorite: [],
 	watchlist: [],
 	rated: [],

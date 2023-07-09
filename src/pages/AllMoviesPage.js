@@ -28,6 +28,11 @@ const AllMoviesPage = () => {
 
 	const dispatch = useDispatch();
 
+	//////disable buttons while fetching
+	///color is already rated
+	///live filtering based on collection switch
+	///cant add to watchlist if rated
+
 	function renderMovies(arr) {
 		const rows = [];
 
@@ -106,9 +111,9 @@ const AllMoviesPage = () => {
 				>
 					<Box
 						display="grid"
-						gridTemplate="380px / repeat(5, 220px)"
+						gridTemplate="360px / repeat(5, 220px)"
 						justifyContent="space-between"
-						gridAutoRows="380px"
+						gridAutoRows="360px"
 						rowGap="10px"
 					>
 						{movies && renderMovies(movies)}

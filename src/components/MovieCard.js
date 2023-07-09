@@ -1,15 +1,27 @@
 import React, {useEffect} from "react";
-import {Box, Text, Image, Button, ScaleFade, useDisclosure} from "@chakra-ui/react";
-
-import useSelectors from "../redux/useSelectors";
-import useHandleCollection from "../api/useHandleCollection";
+import {
+	Box,
+	Text,
+	Image,
+	Button,
+	ScaleFade,
+	useDisclosure,
+	Popover,
+	PopoverArrow,
+	PopoverTrigger,
+	PopoverBody,
+	PopoverContent,
+} from "@chakra-ui/react";
 
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
 
+import StarRating from "./StarRating";
+import FavoriteSvg from "./svg/FavoriteSvg";
+import RateSvg from "./svg/RateSvg";
+import WatchlistSvg from "./svg/WatchlistSvg";
+
 const MovieCard = ({movie, index}) => {
-	const {favorite, watchlist} = useSelectors();
 	const {isOpen, onOpen} = useDisclosure();
-	const {handleCollectionFavorite, handleCollectionWatchlist} = useHandleCollection();
 
 	useEffect(() => {
 		onOpen();
@@ -32,7 +44,7 @@ const MovieCard = ({movie, index}) => {
 				alignItems="center"
 				border="2px solid"
 				borderRadius="12px"
-				h="380px"
+				h="360px"
 			>
 				<Image
 					src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
@@ -62,22 +74,32 @@ const MovieCard = ({movie, index}) => {
 					mt="10px"
 					w="200px"
 				>
-					<Button
-						w="93px"
-						variant={favorite.includes(movie.id) ? "delete" : "solid"}
-						onClick={() => handleCollectionFavorite(movie.id)}
-					>
-						{favorite.includes(movie.id) ? "- Favorites" : "+ Favorites"}
-					</Button>
-					<Button
-						w="93px"
-						variant={watchlist.includes(movie.id) ? "delete" : "solid"}
-						onClick={() => handleCollectionWatchlist(movie.id)}
-					>
-						{watchlist.includes(movie.id) ? "- Watchlsit" : "+ Watchlsit"}
-					</Button>
+					<FavoriteSvg id={movie.id} />
+					<WatchlistSvg id={movie.id} />
+					<Popover>
+						{/* I tried using the chakra forwardRef to turn the RateSvg into a button but encountered weird behavior with the animation */}
+						<PopoverTrigger>
+							<Button
+								w="60px"
+								h="60px"
+								borderRadius="100%"
+								p="0"
+								m="0"
+								variant="link"
+							>
+								<RateSvg />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent w="270px">
+							<PopoverArrow />
+							<PopoverBody>
+								<StarRating id={movie.id} />
+							</PopoverBody>
+						</PopoverContent>
+					</Popover>
 				</Box>
-				<Button mt="10px">Details</Button>
+
+				<Button mt="25px">Details</Button>
 			</Box>
 		</ScaleFade>
 	);

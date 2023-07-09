@@ -12,8 +12,8 @@ import UpButton from "../components/UpButton";
 import useClearData from "../hooks/useClearData";
 
 const CollectionsPage = () => {
-	const {movies, data, totalResults} = useSelectors();
-	const {errorCollections, isLoadingCollections, setCurrentCollection, currentCollection, refetchCollections} =
+	const {movies, data, totalResults, paginationIndex} = useSelectors();
+	const {errorCollections, isRefetchingCollections, setCurrentCollection, currentCollection, refetchCollections} =
 		useFetchCollections();
 	const {paginate} = usePagination();
 	const {clearData} = useClearData();
@@ -100,7 +100,7 @@ const CollectionsPage = () => {
 					Rated
 				</Button>
 			</Box>
-			{isLoadingCollections ? (
+			{isRefetchingCollections && paginationIndex === 1 ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -123,9 +123,9 @@ const CollectionsPage = () => {
 				>
 					<Box
 						display="grid"
-						gridTemplate="380px / repeat(5, 220px)"
+						gridTemplate="360px / repeat(5, 220px)"
 						justifyContent="space-between"
-						gridAutoRows="380px"
+						gridAutoRows="360px"
 						rowGap="10px"
 					>
 						{movies && renderMovies(movies)}
@@ -141,6 +141,14 @@ const CollectionsPage = () => {
 						</Button>
 					)}
 				</Box>
+			) : data.length === 0 ? (
+				<Text
+					textAlign="center"
+					fontSize="25px"
+					py="20px"
+				>
+					You don't have any movies in this collection yet, try adding some!
+				</Text>
 			) : null}
 			<UpButton />
 		</Box>
