@@ -43,7 +43,7 @@ const useFetchCollections = () => {
 			dispatch(setTotalResults(dataCollections.total_results));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataCollections, results]);
+	}, [dataCollections]); ///////add results
 
 	async function fetchCollections(num, collection) {
 		const options = {
