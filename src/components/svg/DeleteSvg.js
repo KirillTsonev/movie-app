@@ -33,6 +33,11 @@ const DeleteSvg = ({id, setRating}) => {
 					}
 				)
 			}
+			style={
+				rated && !rated.map((a) => a.id).includes(id)
+					? {pointerEvents: "none", filter: "grayscale(1) brightness(.5)"}
+					: null
+			}
 		>
 			<path
 				style={

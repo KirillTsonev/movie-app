@@ -39,7 +39,7 @@ const ModalDetails = ({id}) => {
 						onOpen();
 					}}
 				>
-					"Details"
+					Details
 				</Button>
 			)}
 			{!isFetchingDetails && (
@@ -143,7 +143,7 @@ const ModalDetails = ({id}) => {
 										{details &&
 											details.genres.map((a, i) => (
 												<Box
-													w="120px"
+													w="150px"
 													textAlign="center"
 													key={i}
 													borderRadius="10px"
@@ -162,7 +162,9 @@ const ModalDetails = ({id}) => {
 										fontSize="20px"
 										mt="20px"
 										fontWeight="bold"
-									>{`Rating is ${details.vote_average / 2}★ as per ${details.vote_count} users!`}</Text>
+									>{`Rating is ${(details.vote_average / 2).toFixed(1)}★ as per ${
+										details.vote_count
+									} users!`}</Text>
 								</Box>
 							</Box>
 						</ModalBody>

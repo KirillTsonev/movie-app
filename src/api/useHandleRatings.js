@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 import useHandleCollection from "./useHandleCollection";
 import useSelectors from "../redux/useSelectors";
 import {headers} from "../constants";
-import {setWatchList} from "../redux/collectionsSlice";
+import {setRated, setWatchList} from "../redux/collectionsSlice";
 
 const useHandleRatings = () => {
 	const [rating, setRating] = useState(0);
@@ -15,7 +15,7 @@ const useHandleRatings = () => {
 		mutationFn: ({id, value, method}) => postRating({id, value, method}),
 	});
 
-	const {watchlist} = useSelectors();
+	const {watchlist, rated} = useSelectors();
 	const {addToCollection} = useHandleCollection();
 
 	async function postRating({id, value, method}) {
@@ -35,6 +35,8 @@ const useHandleRatings = () => {
 		setRating(value);
 
 		setRatingApi.mutate({id, value, method});
+
+		dispatch(setRated([...rated, {id, rating: value}]));
 
 		if (watchlist.includes(id)) {
 			addToCollection.mutate(

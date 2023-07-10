@@ -6,7 +6,7 @@ import useHandleCollection from "../../api/useHandleCollection";
 const WatchlistSvg = ({id}) => {
 	const [hover, setHover] = useState(false);
 
-	const {watchlist} = useSelectors();
+	const {watchlist, rated} = useSelectors();
 	const {handleCollectionWatchlist} = useHandleCollection();
 
 	return (
@@ -18,6 +18,11 @@ const WatchlistSvg = ({id}) => {
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
 			onClick={() => handleCollectionWatchlist(id)}
+			style={
+				rated && rated.map((a) => a.id).includes(id)
+					? {pointerEvents: "none", filter: "grayscale(1) brightness(.5)"}
+					: null
+			}
 		>
 			<circle
 				style={

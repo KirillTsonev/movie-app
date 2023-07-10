@@ -10,7 +10,7 @@ import useSelectors from "../redux/useSelectors";
 const useFetchLists = () => {
 	const {favorite, watchlist, rated} = useSelectors();
 	const {data: dataFavorite, fetchNextPage: fetchNextPageFavorite} = useInfiniteQuery({
-		queryKey: ["fetchFavorites"],
+		queryKey: ["fetchFavorites", favorite],
 		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "favorite"),
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
@@ -18,7 +18,7 @@ const useFetchLists = () => {
 		enabled: false,
 	});
 	const {data: dataWatchlist, fetchNextPage: fetchNextPageWatchlist} = useInfiniteQuery({
-		queryKey: ["fetchWatchlist"],
+		queryKey: ["fetchWatchlist", watchlist],
 		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "watchlist"),
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
@@ -26,7 +26,7 @@ const useFetchLists = () => {
 		enabled: false,
 	});
 	const {data: dataRated, fetchNextPage: fetchNextPageRated} = useInfiniteQuery({
-		queryKey: ["fetchRated"],
+		queryKey: ["fetchRated", rated],
 		queryFn: ({pageParam = 1}) => fetchLists(pageParam, "rated"),
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;

@@ -89,7 +89,7 @@ const MovieCard = ({movie, index}) => {
 								m="0"
 								variant="link"
 							>
-								<RateSvg />
+								<RateSvg id={movie.id} />
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent w="270px">
@@ -101,12 +101,6 @@ const MovieCard = ({movie, index}) => {
 					</Popover>
 				</Box>
 				<ModalDetails id={movie.id} />
-				{/* <Button
-					mt="25px"
-					onClick={() => setId(movie.id)}
-				>
-					Details
-				</Button> */}
 			</Box>
 		</ScaleFade>
 	);

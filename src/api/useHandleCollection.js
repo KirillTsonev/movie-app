@@ -57,7 +57,9 @@ const useHandleCollection = () => {
 						dispatch(setFavorite([...favorite, id]));
 						dispatch(setWatchList(watchlist.filter((a) => a !== id)));
 
-						filterLocally(id);
+						if (results === "collection") {
+							filterLocally(id);
+						}
 					},
 				}
 			);
@@ -96,7 +98,9 @@ const useHandleCollection = () => {
 						dispatch(setWatchList([...watchlist, id]));
 						dispatch(setFavorite(favorite.filter((a) => a !== id)));
 
-						filterLocally(id);
+						if (results === "collection") {
+							filterLocally(id);
+						}
 					},
 				}
 			);

@@ -1,7 +1,11 @@
 import React, {useState} from "react";
 
-const RateSvg = () => {
+import useSelectors from "../../redux/useSelectors";
+
+const RateSvg = ({id}) => {
 	const [hover, setHover] = useState(false);
+
+	const {rated} = useSelectors();
 
 	return (
 		<svg
@@ -13,14 +17,30 @@ const RateSvg = () => {
 			onMouseLeave={() => setHover(false)}
 		>
 			<circle
-				style={hover ? {fill: "#17b824", transition: "all .4s"} : {fill: "#324A5E", transition: "all .4s"}}
+				style={
+					rated && rated.map((a) => a.id).includes(id) && !hover
+						? {fill: "#bd980c", transition: "all .4s"}
+						: rated && rated.map((a) => a.id).includes(id) && hover
+						? {fill: "#aa5e00", transition: "all .4s"}
+						: rated && !rated.map((a) => a.id).includes(id) && hover
+						? {fill: "#17b824", transition: "all .4s"}
+						: {fill: "#324A5E", transition: "all .4s"}
+				}
 				cx="256"
 				cy="256"
 				r="256"
 			/>
 			<g>
 				<path
-					style={hover ? {fill: "#006400", transition: "all .4s"} : {fill: "#202c3b", transition: "all .4s"}}
+					style={
+						rated && rated.map((a) => a.id).includes(id) && !hover
+							? {fill: "#977a0c", transition: "all .4s"}
+							: rated && rated.map((a) => a.id).includes(id) && hover
+							? {fill: "#794301", transition: "all .4s"}
+							: rated && !rated.map((a) => a.id).includes(id) && hover
+							? {fill: "#006400", transition: "all .4s"}
+							: {fill: "#202c3b", transition: "all .4s"}
+					}
 					d="M306.416,507.025c94.961-18.968,170.953-90.465,196.408-182.915L387.127,208.413l-17.132,14.507
    L268.879,121.804l-28.012,143.772l-116.798-33.318l96.166,96.166l-50.185,42.236L306.416,507.025z"
 				/>
