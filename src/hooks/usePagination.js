@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 
-import {setMovies, setPaginationSlice, setPaginationIndex} from "../redux/homeSlice";
+import {setMovies, setPaginationSlice} from "../redux/homeSlice";
 import useSelectors from "../redux/useSelectors";
 import useSearchBarComplex from "../api/useSearchBarComplex";
 import useSearchBarSimple from "../api/useSearchBarSimple";
@@ -10,15 +10,16 @@ import useFetchCollections from "../api/useFetchCollections";
 
 const usePagination = () => {
 	const {paginationSlice, data, movies, results} = useSelectors();
-	const {refetchSearchComplex} = useSearchBarComplex();
-	const {refetchSearchSimple} = useSearchBarSimple();
-	const {refetchPlaying} = useGetPlayingNow();
-	const {refetchCollections} = useFetchCollections();
+	const {fetchNextPageSearchComplex} = useSearchBarComplex();
+	const {fetchNextPageSearchSimple} = useSearchBarSimple();
+	const {fetchNextPagePlaying} = useGetPlayingNow();
+	const {fetchNextPageCollections} = useFetchCollections();
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(setMovies([...new Set([...movies, ...data])].slice(0, paginationSlice)));
+		// dispatch(setMovies([...new Set([...movies, ...data])].slice(0, paginationSlice)));
+		dispatch(setMovies(data.slice(0, paginationSlice)));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, paginationSlice]);
 
@@ -26,18 +27,21 @@ const usePagination = () => {
 		dispatch(setPaginationSlice());
 
 		if (data.length === movies.length || movies.length === 10) {
-			dispatch(setPaginationIndex());
-
 			if (results === "complex") {
-				refetchSearchComplex();
+				fetchNextPageSearchComplex();
 			}
 
 			if (results === "simple") {
-				refetchSearchSimple();
+				fetchNextPageSearchSimple();
 			}
 
-			refetchPlaying();
-			refetchCollections();
+			if (results === "all") {
+				fetchNextPagePlaying();
+			}
+
+			if (results === "collection") {
+				fetchNextPageCollections();
+			}
 		}
 	}
 

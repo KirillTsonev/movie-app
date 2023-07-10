@@ -1,19 +1,17 @@
 import fetchCast from "./fetchCast";
 
-async function createComplexLink({year, yearState, cast, castState, genres, num}) {
+async function createComplexLink({year, cast, genres, num}) {
 	let link =
 		"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=" + num;
 
-	if (!!yearState || !!year) {
-		link += `&primary_release_year=${!!yearState ? yearState : year}&sort_by=popularity.desc`;
+	if (year) {
+		link += `&primary_release_year=${year}&sort_by=popularity.desc`;
 	} else {
 		link += "&sort_by=popularity.desc";
 	}
 
-	if (!!castState || !!cast) {
-		const castForFetch = !!castState
-			? castState.split(",").map((a) => a.trim())
-			: cast.split(",").map((a) => a.trim());
+	if (cast) {
+		const castForFetch = cast.split(",").map((a) => a.trim());
 
 		let data = await Promise.all(
 			castForFetch.map(async (a) => {

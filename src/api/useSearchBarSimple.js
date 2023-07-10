@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {useQuery} from "react-query";
+import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
@@ -10,25 +10,30 @@ import useSelectors from "../redux/useSelectors";
 const useSearchBarSimple = () => {
 	const [titleState, setTitleState] = useState("");
 
-	const {results, data, title, paginationIndex} = useSelectors();
+	const {results, title} = useSelectors();
 	const {
 		isFetching: isFetchingSearchSimple,
 		error: errorSearchSimple,
 		data: dataSearchSimple,
 		refetch: refetchSearchSimple,
-	} = useQuery({
-		queryKey: ["simpleSearch"],
-		queryFn: () => fetchSimpleSearch(paginationIndex),
+		fetchNextPage: fetchNextPageSearchSimple,
+	} = useInfiniteQuery({
+		queryKey: ["simpleSearch", results],
+		queryFn: ({pageParam = 1}) => fetchSimpleSearch(pageParam),
+		getNextPageParam: (lastPage) => {
+			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
+		},
 		keepPreviousData: true,
 		enabled: false,
+		cacheTime: 0,
 	});
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		if (results === "simple" && dataSearchSimple) {
-			dispatch(setData([...new Set([...data, ...dataSearchSimple.results])]));
-			dispatch(setTotalResults(dataSearchSimple.total_results));
+			dispatch(setTotalResults(dataSearchSimple.pages[0].total_results));
+			dispatch(setData([...dataSearchSimple.pages.map((a) => a.results)].flat()));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSearchSimple]);
@@ -40,9 +45,7 @@ const useSearchBarSimple = () => {
 		};
 
 		return fetch(
-			`https://api.themoviedb.org/3/search/movie?query=${
-				!!titleState ? titleState : title
-			}&include_adult=false&language=en-US&page=` + num,
+			`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=` + num,
 			options
 		).then((res) => res.json());
 	}
@@ -54,6 +57,7 @@ const useSearchBarSimple = () => {
 		titleState,
 		setTitleState,
 		dataSearchSimple,
+		fetchNextPageSearchSimple,
 	};
 };
 

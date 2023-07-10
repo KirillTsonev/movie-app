@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {useQuery} from "react-query";
+import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
 import {setData} from "../redux/homeSlice";
@@ -14,34 +14,39 @@ const useSearchBarComplex = () => {
 
 	const dispatch = useDispatch();
 
-	const {results, genres, data, year, cast, paginationIndex} = useSelectors();
+	const {results, genres, year, cast} = useSelectors();
 	const {
 		isFetching: isFetchingSearchComplex,
 		error: errorSearchComplex,
 		data: dataSearchComplex,
 		refetch: refetchSearchComplex,
-	} = useQuery({
-		queryKey: ["complexSearch"],
-		queryFn: () => fetchComplexSearch({year, yearState, cast, castState, genres, num: paginationIndex}),
+		fetchNextPage: fetchNextPageSearchComplex,
+	} = useInfiniteQuery({
+		queryKey: ["complexSearch", results],
+		queryFn: ({pageParam = 1}) => fetchComplexSearch({year, cast, genres, num: pageParam}),
+		getNextPageParam: (lastPage) => {
+			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
+		},
 		keepPreviousData: true,
 		enabled: false,
+		cacheTime: 0,
 	});
 
 	useEffect(() => {
 		if (results === "complex" && dataSearchComplex) {
-			dispatch(setData([...new Set([...data, ...dataSearchComplex.results])]));
-			dispatch(setTotalResults(dataSearchComplex.total_results));
+			dispatch(setTotalResults(dataSearchComplex.pages[0].total_results));
+			dispatch(setData([...dataSearchComplex.pages.map((a) => a.results)].flat()));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSearchComplex]);
 
-	async function fetchComplexSearch({year, yearState, cast, castState, genres, num}) {
+	async function fetchComplexSearch({year, cast, genres, num}) {
 		const options = {
 			method: "GET",
 			headers,
 		};
 
-		const link = await createComplexLink({year, yearState, cast, castState, genres, num});
+		const link = await createComplexLink({year, cast, genres, num});
 
 		return fetch(link, options).then((res) => res.json());
 	}
@@ -55,6 +60,7 @@ const useSearchBarComplex = () => {
 		castState,
 		setYearState,
 		setCastState,
+		fetchNextPageSearchComplex,
 	};
 };
 

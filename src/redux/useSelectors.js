@@ -2,7 +2,6 @@ import {useSelector} from "react-redux";
 
 const useSelectors = () => {
 	const paginationSlice = useSelector((state) => state.home.paginationSlice);
-	const paginationIndex = useSelector((state) => state.home.paginationIndex);
 	const movies = useSelector((state) => state.home.movies);
 	const data = useSelector((state) => state.home.data);
 
@@ -24,7 +23,6 @@ const useSelectors = () => {
 	return {
 		results,
 		paginationSlice,
-		paginationIndex,
 		title,
 		year,
 		cast,

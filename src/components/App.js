@@ -12,24 +12,24 @@ import theme from "../theme/theme";
 
 import {setupStore} from "../redux/store";
 
-const queryClient = new QueryClient();
-const store = setupStore();
-const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <AllMoviesPage />,
-	},
-	{
-		path: "/collections",
-		element: <CollectionsPage />,
-	},
-	{
-		path: "/*",
-		element: <Error404Page />,
-	},
-]);
-
 function App() {
+	const queryClient = new QueryClient();
+	const store = setupStore();
+	const router = createBrowserRouter([
+		{
+			path: "/",
+			element: <AllMoviesPage />,
+		},
+		{
+			path: "/collections",
+			element: <CollectionsPage />,
+		},
+		{
+			path: "/*",
+			element: <Error404Page />,
+		},
+	]);
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ChakraProvider theme={theme}>

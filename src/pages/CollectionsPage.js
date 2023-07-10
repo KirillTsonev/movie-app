@@ -12,8 +12,7 @@ import CollectionsFilters from "../components/CollectionsFilters";
 import CollectionsMoviesDisplay from "../components/CollectionsMoviesDisplay";
 
 const CollectionsPage = () => {
-	const {movies, paginationIndex} = useSelectors();
-	const {paginate} = usePagination();
+	const {movies} = useSelectors();
 	const {
 		errorCollections,
 		isFetchingCollections,
@@ -22,6 +21,8 @@ const CollectionsPage = () => {
 		refetchCollections,
 		isSuccessCollections,
 	} = useFetchCollections();
+
+	const {paginate} = usePagination();
 
 	return (
 		<Box
@@ -35,7 +36,7 @@ const CollectionsPage = () => {
 				currentCollection={currentCollection}
 				refetchCollections={refetchCollections}
 			/>
-			{isFetchingCollections && paginationIndex === 1 ? (
+			{isFetchingCollections && movies.length === 0 ? (
 				<Box
 					display="flex"
 					justifyContent="center"

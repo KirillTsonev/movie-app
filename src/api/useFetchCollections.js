@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useQuery} from "react-query";
+import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 import {useLocation} from "react-router";
 
@@ -12,7 +12,7 @@ import {setTotalResults} from "../redux/settingsSlice";
 const useFetchCollections = () => {
 	const [currentCollection, setCurrentCollection] = useState("favorite");
 
-	const {results, data, paginationIndex} = useSelectors();
+	const {results} = useSelectors();
 	const {clearData} = useClearData();
 	const {
 		isFetching: isFetchingCollections,
@@ -20,15 +20,28 @@ const useFetchCollections = () => {
 		error: errorCollections,
 		data: dataCollections,
 		refetch: refetchCollections,
-	} = useQuery({
-		queryKey: ["fetchCollections"],
-		queryFn: () => fetchCollections(paginationIndex, currentCollection),
+		fetchNextPage: fetchNextPageCollections,
+	} = useInfiniteQuery({
+		queryKey: ["fetchCollections", results],
+		queryFn: ({pageParam = 1}) => fetchCollections(pageParam, currentCollection),
+		getNextPageParam: (lastPage) => {
+			return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
+		},
 		keepPreviousData: true,
 		enabled: false,
+		cacheTime: 0,
 	});
 
 	const location = useLocation();
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (results === "collection" && dataCollections) {
+			dispatch(setTotalResults(dataCollections.pages[0].total_results));
+			dispatch(setData([...dataCollections.pages.map((a) => a.results)].flat()));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dataCollections]);
 
 	useEffect(() => {
 		if (location.pathname === "/collections") {
@@ -36,14 +49,6 @@ const useFetchCollections = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	useEffect(() => {
-		if (results === "collection" && dataCollections) {
-			dispatch(setData([...new Set([...data, ...dataCollections.results])]));
-			dispatch(setTotalResults(dataCollections.total_results));
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataCollections]); ///////add results
 
 	async function fetchCollections(num, collection) {
 		const options = {
@@ -64,6 +69,7 @@ const useFetchCollections = () => {
 		setCurrentCollection,
 		currentCollection,
 		isSuccessCollections,
+		fetchNextPageCollections,
 	};
 };
 

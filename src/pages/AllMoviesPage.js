@@ -14,10 +14,11 @@ import AllMoviesDisplay from "../components/AllMoviesDisplay";
 import SearchBars from "../components/SearchBars";
 
 const AllMoviesPage = () => {
-	const {isFetchingPlaying, errorPlaying, refetchPlaying} = useGetPlayingNow();
-	const {isFetchingSearchSimple, errorSearchSimple, dataSearchSimple} = useSearchBarSimple();
-	const {isFetchingSearchComplex, errorSearchComplex, dataSearchComplex} = useSearchBarComplex();
-	const {movies, paginationIndex} = useSelectors();
+	const {isFetchingPlaying, errorPlaying, refetchPlaying, isSuccessPlaying} = useGetPlayingNow();
+	const {isFetchingSearchSimple, errorSearchSimple} = useSearchBarSimple();
+	const {isFetchingSearchComplex, errorSearchComplex} = useSearchBarComplex();
+	const {movies} = useSelectors();
+
 	const {paginate} = usePagination();
 
 	//tests
@@ -39,7 +40,7 @@ const AllMoviesPage = () => {
 			{/* This condition ensures showing spinner on every new search. The isLoading value provided by React Query only fires off on 
 			the very first fetch, hence it's not suitable for this job. If the index is not a part of the condition the spinner appears 
 			on every pagination load, even for previous data that has already been fetched */}
-			{(isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex) && paginationIndex === 1 ? (
+			{(isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex) && movies.length === 0 ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -64,7 +65,7 @@ const AllMoviesPage = () => {
 					isFetchingSearchSimple={isFetchingSearchSimple}
 					paginate={paginate}
 				/>
-			) : dataSearchComplex?.results.length === 0 || dataSearchSimple?.results.length === 0 ? (
+			) : movies.length === 0 && isSuccessPlaying ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"
