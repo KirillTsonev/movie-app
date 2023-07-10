@@ -20,7 +20,7 @@ import useSearchBarComplex from "../api/useSearchBarComplex";
 import useSelectors from "../redux/useSelectors";
 import useHandleComplexSearch from "../hooks/useHandleComplexSearch";
 
-const SearchBarComplex = () => {
+const SearchBarComplex = ({isFetchingPlaying, isFetchingSearchComplex}) => {
 	const {dataGenres} = useFetchGenres();
 	const {castState, yearState, setCastState, setYearState} = useSearchBarComplex();
 	const {selectedGenres, checks, handleCheckGenre} = useCheckBoxes();
@@ -114,6 +114,7 @@ const SearchBarComplex = () => {
 			<Button
 				ml="20px"
 				type="submit"
+				style={isFetchingSearchComplex && isFetchingPlaying ? {pointerEvents: "none"} : null}
 			>
 				Search
 			</Button>

@@ -22,7 +22,6 @@ const useGetPlayingNow = () => {
 		queryFn: () => fetchMovies(paginationIndex),
 		keepPreviousData: true,
 		enabled: false,
-		cacheTime: 0,
 	});
 
 	const dispatch = useDispatch();

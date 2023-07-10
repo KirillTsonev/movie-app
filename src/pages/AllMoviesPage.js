@@ -10,7 +10,7 @@ import usePagination from "../hooks/usePagination";
 import useSelectors from "../redux/useSelectors";
 import useClearData from "../hooks/useClearData";
 
-import {setComplexSearch, setSearched} from "../redux/settingsSlice";
+import {setComplexSearch} from "../redux/settingsSlice";
 
 import NavBar from "../components/NavBar";
 import SearchBarSimple from "../components/SearchBarSimple";
@@ -28,8 +28,8 @@ const AllMoviesPage = () => {
 
 	const dispatch = useDispatch();
 
-	//////disable buttons while fetching
-	///readme and constants
+	//tests
+	//readme and constants
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -60,12 +60,12 @@ const AllMoviesPage = () => {
 				position="relative"
 			>
 				<SearchBarComplex
-					complexSearch={complexSearch}
-					setSearched={setSearched}
+					isFetchingSearchComplex={isFetchingSearchComplex}
+					isFetchingPlaying={isFetchingPlaying}
 				/>
 				<SearchBarSimple
-					complexSearch={complexSearch}
-					setSearched={setSearched}
+					isFetchingSearchSimple={isFetchingSearchSimple}
+					isFetchingPlaying={isFetchingPlaying}
 				/>
 				<Button
 					mx="auto"
@@ -84,6 +84,9 @@ const AllMoviesPage = () => {
 					Clear Search
 				</Button>
 			</Box>
+			{/* This condition ensures showing spinner on every new search. The isLoading value provided by React Query only fires off on 
+			the very first fetch, hence it's not suitable for this job. If the index is not a part of the condition the spinner appears 
+			on every pagination load, even for previous data that has already been fetched */}
 			{(isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex) && paginationIndex === 1 ? (
 				<Box
 					display="flex"
@@ -116,12 +119,26 @@ const AllMoviesPage = () => {
 					>
 						{movies && renderMovies(movies)}
 					</Box>
+					{(isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex) && (
+						<Text
+							textAlign="center"
+							fontSize="25px"
+							p="25px"
+						>
+							Loading...
+						</Text>
+					)}
 					{movies.length < 100 && movies.length < totalResults && (
 						<Button
 							display="block"
 							mx="auto"
 							mt="20px"
 							onClick={paginate}
+							style={
+								isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex
+									? {pointerEvents: "none"}
+									: null
+							}
 						>
 							Load more movies
 						</Button>

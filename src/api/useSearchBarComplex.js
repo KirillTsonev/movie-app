@@ -25,7 +25,6 @@ const useSearchBarComplex = () => {
 		queryFn: () => fetchComplexSearch({year, yearState, cast, castState, genres, num: paginationIndex}),
 		keepPreviousData: true,
 		enabled: false,
-		cacheTime: 0,
 	});
 
 	useEffect(() => {

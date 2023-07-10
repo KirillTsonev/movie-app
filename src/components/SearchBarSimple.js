@@ -5,7 +5,7 @@ import useSearchBarSimple from "../api/useSearchBarSimple";
 import useHandleSimpleSearch from "../hooks/useHandleSimpleSearch";
 import useSelectors from "../redux/useSelectors";
 
-const SearchBarSimple = () => {
+const SearchBarSimple = ({isFetchingSearchSimple, isFetchingPlaying}) => {
 	const {titleState, setTitleState} = useSearchBarSimple();
 	const {handleSearch} = useHandleSimpleSearch();
 	const {complexSearch} = useSelectors();
@@ -28,6 +28,7 @@ const SearchBarSimple = () => {
 			<Button
 				ml="20px"
 				type="submit"
+				style={isFetchingSearchSimple && isFetchingPlaying ? {pointerEvents: "none"} : null}
 			>
 				Search
 			</Button>

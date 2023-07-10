@@ -21,7 +21,6 @@ const useSearchBarSimple = () => {
 		queryFn: () => fetchSimpleSearch(paginationIndex),
 		keepPreviousData: true,
 		enabled: false,
-		cacheTime: 0,
 	});
 
 	const dispatch = useDispatch();
