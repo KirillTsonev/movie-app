@@ -4,6 +4,14 @@ import {server} from "./mocks/server";
 
 beforeAll(() => server.listen());
 
-afterEach(() => server.resetHandlers());
+beforeEach(() => {
+	jest.spyOn(console, "error");
+	console.error.mockImplementation(() => null);
+});
+
+afterEach(() => {
+	server.resetHandlers();
+	console.error.mockRestore();
+});
 
 afterAll(() => server.close());

@@ -16,6 +16,7 @@ const useFetchCollections = () => {
 	const {clearData} = useClearData();
 	const {
 		isFetching: isFetchingCollections,
+		isSuccess: isSuccessCollections,
 		error: errorCollections,
 		data: dataCollections,
 		refetch: refetchCollections,
@@ -56,7 +57,14 @@ const useFetchCollections = () => {
 		).then((response) => response.json());
 	}
 
-	return {isFetchingCollections, errorCollections, refetchCollections, setCurrentCollection, currentCollection};
+	return {
+		isFetchingCollections,
+		errorCollections,
+		refetchCollections,
+		setCurrentCollection,
+		currentCollection,
+		isSuccessCollections,
+	};
 };
 
 export default useFetchCollections;

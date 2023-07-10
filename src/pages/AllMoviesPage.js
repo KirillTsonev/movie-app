@@ -101,7 +101,7 @@ const AllMoviesPage = () => {
 					fontSize="25px"
 					py="20px"
 				>
-					{errorSearchComplex.message === "result.results[0] is undefined"
+					{errorSearchComplex.message
 						? "No such cast found, try another query!"
 						: "There is a problem with our servers, please try again later!"}
 				</Text>
@@ -128,21 +128,25 @@ const AllMoviesPage = () => {
 							Loading...
 						</Text>
 					)}
-					{movies.length < 100 && movies.length < totalResults && (
-						<Button
-							display="block"
-							mx="auto"
-							mt="20px"
-							onClick={paginate}
-							style={
-								isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex
-									? {pointerEvents: "none"}
-									: null
-							}
-						>
-							Load more movies
-						</Button>
-					)}
+					{!isFetchingPlaying &&
+						!isFetchingSearchSimple &&
+						!isFetchingSearchComplex &&
+						movies.length < 100 &&
+						movies.length < totalResults && (
+							<Button
+								display="block"
+								mx="auto"
+								mt="20px"
+								onClick={paginate}
+								style={
+									isFetchingPlaying || isFetchingSearchSimple || isFetchingSearchComplex
+										? {pointerEvents: "none"}
+										: null
+								}
+							>
+								Load more movies
+							</Button>
+						)}
 				</Box>
 			) : dataSearchComplex?.results.length === 0 || dataSearchSimple?.results.length === 0 ? (
 				<Text

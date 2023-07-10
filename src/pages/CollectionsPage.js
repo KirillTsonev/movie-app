@@ -9,20 +9,19 @@ import useFetchCollections from "../api/useFetchCollections";
 import NavBar from "../components/NavBar";
 import MovieCard from "../components/MovieCard";
 import UpButton from "../components/UpButton";
-import useClearData from "../hooks/useClearData";
+import CollectionsFilters from "../components/CollectionsFilters";
 
 const CollectionsPage = () => {
 	const {movies, data, totalResults, paginationIndex} = useSelectors();
-	const {errorCollections, isFetchingCollections, setCurrentCollection, currentCollection, refetchCollections} =
-		useFetchCollections();
 	const {paginate} = usePagination();
-	const {clearData} = useClearData();
-
-	function filterCollections(collection) {
-		clearData("collection", refetchCollections);
-
-		setCurrentCollection(collection);
-	}
+	const {
+		errorCollections,
+		isFetchingCollections,
+		setCurrentCollection,
+		currentCollection,
+		refetchCollections,
+		isSuccessCollections,
+	} = useFetchCollections();
 
 	function renderMovies(arr) {
 		const rows = [];
@@ -47,59 +46,11 @@ const CollectionsPage = () => {
 			mx="auto"
 		>
 			<NavBar />
-			<Box
-				display="flex"
-				justifyContent="space-around"
-			>
-				<Button
-					w="30%"
-					style={
-						currentCollection === "favorite"
-							? {
-									background: "#17b824",
-									transform: "translateX(5px) translateY(-5px)",
-									boxShadow:
-										"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-							  }
-							: null
-					}
-					onClick={() => filterCollections("favorite")}
-				>
-					Favorites
-				</Button>
-				<Button
-					w="30%"
-					style={
-						currentCollection === "watchlist"
-							? {
-									background: "#17b824",
-									transform: "translateX(5px) translateY(-5px)",
-									boxShadow:
-										"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-							  }
-							: null
-					}
-					onClick={() => filterCollections("watchlist")}
-				>
-					Watchlsit
-				</Button>
-				<Button
-					w="30%"
-					style={
-						currentCollection === "rated"
-							? {
-									background: "#17b824",
-									transform: "translateX(5px) translateY(-5px)",
-									boxShadow:
-										"-1px 1px 1px #006400, -2px 2px 1px #006400, -3px 3px 1px #006400, -4px 4px 1px #006400, -5px 5px 1px #006400",
-							  }
-							: null
-					}
-					onClick={() => filterCollections("rated")}
-				>
-					Rated
-				</Button>
-			</Box>
+			<CollectionsFilters
+				setCurrentCollection={setCurrentCollection}
+				currentCollection={currentCollection}
+				refetchCollections={refetchCollections}
+			/>
 			{isFetchingCollections && paginationIndex === 1 ? (
 				<Box
 					display="flex"
@@ -130,7 +81,16 @@ const CollectionsPage = () => {
 					>
 						{movies && renderMovies(movies)}
 					</Box>
-					{movies.length < 100 && movies.length < totalResults && (
+					{isFetchingCollections && (
+						<Text
+							textAlign="center"
+							fontSize="25px"
+							p="25px"
+						>
+							Loading...
+						</Text>
+					)}
+					{!isFetchingCollections && movies.length < 100 && movies.length < totalResults && (
 						<Button
 							display="block"
 							mx="auto"
@@ -141,7 +101,7 @@ const CollectionsPage = () => {
 						</Button>
 					)}
 				</Box>
-			) : data.length === 0 ? (
+			) : movies.length === 0 && isSuccessCollections ? (
 				<Text
 					textAlign="center"
 					fontSize="25px"

@@ -18,7 +18,7 @@ const useGetPlayingNow = () => {
 		data: dataPlaying,
 		refetch: refetchPlaying,
 	} = useQuery({
-		queryKey: ["playingNow", results],
+		queryKey: ["playingNow"],
 		queryFn: () => fetchMovies(paginationIndex),
 		keepPreviousData: true,
 		enabled: false,
@@ -44,7 +44,7 @@ const useGetPlayingNow = () => {
 			dispatch(setTotalResults(dataPlaying.total_results));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataPlaying]);
+	}, [dataPlaying, results]);
 
 	async function fetchMovies(num) {
 		const options = {

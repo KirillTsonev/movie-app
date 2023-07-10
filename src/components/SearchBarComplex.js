@@ -23,10 +23,10 @@ import useHandleComplexSearch from "../hooks/useHandleComplexSearch";
 const SearchBarComplex = ({isFetchingPlaying, isFetchingSearchComplex}) => {
 	const {dataGenres} = useFetchGenres();
 	const {castState, yearState, setCastState, setYearState} = useSearchBarComplex();
-	const {selectedGenres, checks, handleCheckGenre} = useCheckBoxes();
+	const {selectedGenres, checks, handleCheckGenre, setChecks, setSelectedGenres} = useCheckBoxes();
 	const {onOpen} = useDisclosure();
 	const {complexSearch} = useSelectors();
-	const {handleSearch} = useHandleComplexSearch();
+	const {handleSearch} = useHandleComplexSearch({setSelectedGenres, setChecks, checks});
 
 	return (
 		<Box
@@ -63,12 +63,13 @@ const SearchBarComplex = ({isFetchingPlaying, isFetchingSearchComplex}) => {
 						>
 							<PopoverArrow />
 							<PopoverBody>
-								<Box>
+								<Box data-testid="checksId">
 									{dataGenres &&
 										dataGenres.genres.map((a, i) => (
 											<Checkbox
 												key={a.id}
 												value={a.id}
+												name={a.name}
 												id={a.id}
 												mr="10px"
 												mt="10px"

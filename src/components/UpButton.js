@@ -28,7 +28,10 @@ const UpButton = () => {
 	};
 
 	return (
-		<Fade in={showButton}>
+		<Fade
+			in={showButton}
+			data-testid="upTest"
+		>
 			<Image
 				src={upButton}
 				position="fixed"

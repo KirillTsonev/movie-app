@@ -5,6 +5,8 @@ import useHandleRatings from "../../api/useHandleRatings";
 import useSelectors from "../../redux/useSelectors";
 
 import {setRated} from "../../redux/collectionsSlice";
+import {setTotalResults} from "../../redux/settingsSlice";
+import {setMovies} from "../../redux/homeSlice";
 
 const DeleteSvg = ({id, setRating}) => {
 	const [hover, setHover] = useState(false);
@@ -12,7 +14,18 @@ const DeleteSvg = ({id, setRating}) => {
 	const dispatch = useDispatch();
 
 	const {setRatingApi} = useHandleRatings();
-	const {rated} = useSelectors();
+	const {rated, results, movies} = useSelectors();
+
+	function handleDeleteRating(id) {
+		setRating(0);
+
+		dispatch(setRated(rated.filter((a) => a.id !== id)));
+
+		if (results === "collection") {
+			dispatch(setMovies(movies.filter((a) => a.id !== id)));
+			dispatch(setTotalResults(movies.length - 1));
+		}
+	}
 
 	return (
 		<svg
@@ -27,8 +40,7 @@ const DeleteSvg = ({id, setRating}) => {
 					{id, undefined, method: "DELETE"},
 					{
 						onSuccess: () => {
-							setRating(0);
-							dispatch(setRated(rated.filter((a) => a.id !== id)));
+							handleDeleteRating(id);
 						},
 					}
 				)

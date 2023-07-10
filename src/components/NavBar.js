@@ -7,7 +7,7 @@ import ThemeSwitch from "./ThemeSwitch";
 import useFetchLists from "../api/useFetchLists";
 
 const NavBar = () => {
-	const {} = useFetchLists();
+	useFetchLists();
 
 	return (
 		<Box

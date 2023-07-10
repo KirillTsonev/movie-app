@@ -1,14 +1,12 @@
 import {useDispatch} from "react-redux";
 
 import useSearchBarComplex from "../api/useSearchBarComplex";
-import useCheckBoxes from "./useCheckBoxes";
 import {resetQueries, setComplexQueries} from "../redux/queriesSlice";
 import {resetHomeState} from "../redux/homeSlice";
 import {setSearched} from "../redux/settingsSlice";
 
-const useHandleComplexSearch = () => {
+const useHandleComplexSearch = ({setSelectedGenres, setChecks, checks}) => {
 	const {refetchSearchComplex} = useSearchBarComplex();
-	const {setSelectedGenres, setChecks, checks} = useCheckBoxes();
 
 	const dispatch = useDispatch();
 
