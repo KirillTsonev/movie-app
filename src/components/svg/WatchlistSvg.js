@@ -23,6 +23,7 @@ const WatchlistSvg = ({id}) => {
 					? {pointerEvents: "none", filter: "grayscale(1) brightness(.5)"}
 					: null
 			}
+			data-testid="watchlistTest"
 		>
 			<circle
 				style={

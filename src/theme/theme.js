@@ -18,9 +18,40 @@ const Button = defineStyleConfig({
 	},
 });
 
+const Background = defineStyleConfig({
+	baseStyle: {
+		_after: {
+			content: '""',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			position: "absolute",
+			zIndex: -1,
+			height: "100%",
+			width: "100%",
+		},
+	},
+	variants: {
+		backgroundImg: {
+			_after: {
+				backgroundPosition: "center",
+				backgroundRepeat: "no-repeat",
+			},
+		},
+		backgroundColor: {
+			_after: {
+				opacity: ".8",
+				filter: "brightness(.3)",
+			},
+		},
+	},
+});
+
 const theme = extendTheme({
 	components: {
 		Button,
+		Background,
 	},
 });
 

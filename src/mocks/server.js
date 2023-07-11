@@ -12,23 +12,7 @@ const handlers = [
 					{
 						backdrop_path: "/oqP1qEZccq5AD9TVTIaO6IGUj7o.jpg",
 						id: 455476,
-						original_language: "en",
-					},
-				],
-				total_pages: 1,
-				total_results: 1,
-			})
-		);
-	}),
-	rest.get(`https://api.themoviedb.org/3/account/${accountID}/rated/movies`, (req, res, ctx) => {
-		return res(
-			ctx.json({
-				page: 1,
-				results: [
-					{
-						backdrop_path: "/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg",
-						id: 502356,
-						original_title: "The Super Mario Bros. Movie",
+						original_title: "Knights of the Zodiac",
 					},
 				],
 				total_pages: 1,
@@ -52,6 +36,22 @@ const handlers = [
 			})
 		);
 	}),
+	rest.get(`https://api.themoviedb.org/3/account/${accountID}/rated/movies`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				page: 1,
+				results: [
+					{
+						backdrop_path: "/woJbg7ZqidhpvqFGGMRhWQNoxwa.jpg",
+						id: 667538,
+						original_title: "Transformers: Rise of the Beasts",
+					},
+				],
+				total_pages: 1,
+				total_results: 1,
+			})
+		);
+	}),
 	rest.get(`https://api.themoviedb.org/3/genre/movie/list`, (req, res, ctx) => {
 		return res(
 			ctx.json({
@@ -64,74 +64,74 @@ const handlers = [
 						id: 12,
 						name: "Adventure",
 					},
-					{
-						id: 16,
-						name: "Animation",
-					},
-					{
-						id: 35,
-						name: "Comedy",
-					},
-					{
-						id: 80,
-						name: "Crime",
-					},
-					{
-						id: 99,
-						name: "Documentary",
-					},
-					{
-						id: 18,
-						name: "Drama",
-					},
-					{
-						id: 10751,
-						name: "Family",
-					},
-					{
-						id: 14,
-						name: "Fantasy",
-					},
-					{
-						id: 36,
-						name: "History",
-					},
-					{
-						id: 27,
-						name: "Horror",
-					},
-					{
-						id: 10402,
-						name: "Music",
-					},
-					{
-						id: 9648,
-						name: "Mystery",
-					},
-					{
-						id: 10749,
-						name: "Romance",
-					},
-					{
-						id: 878,
-						name: "Science Fiction",
-					},
-					{
-						id: 10770,
-						name: "TV Movie",
-					},
-					{
-						id: 53,
-						name: "Thriller",
-					},
-					{
-						id: 10752,
-						name: "War",
-					},
-					{
-						id: 37,
-						name: "Western",
-					},
+					// {
+					// 	id: 16,
+					// 	name: "Animation",
+					// },
+					// {
+					// 	id: 35,
+					// 	name: "Comedy",
+					// },
+					// {
+					// 	id: 80,
+					// 	name: "Crime",
+					// },
+					// {
+					// 	id: 99,
+					// 	name: "Documentary",
+					// },
+					// {
+					// 	id: 18,
+					// 	name: "Drama",
+					// },
+					// {
+					// 	id: 10751,
+					// 	name: "Family",
+					// },
+					// {
+					// 	id: 14,
+					// 	name: "Fantasy",
+					// },
+					// {
+					// 	id: 36,
+					// 	name: "History",
+					// },
+					// {
+					// 	id: 27,
+					// 	name: "Horror",
+					// },
+					// {
+					// 	id: 10402,
+					// 	name: "Music",
+					// },
+					// {
+					// 	id: 9648,
+					// 	name: "Mystery",
+					// },
+					// {
+					// 	id: 10749,
+					// 	name: "Romance",
+					// },
+					// {
+					// 	id: 878,
+					// 	name: "Science Fiction",
+					// },
+					// {
+					// 	id: 10770,
+					// 	name: "TV Movie",
+					// },
+					// {
+					// 	id: 53,
+					// 	name: "Thriller",
+					// },
+					// {
+					// 	id: 10752,
+					// 	name: "War",
+					// },
+					// {
+					// 	id: 37,
+					// 	name: "Western",
+					// },
 				],
 			})
 		);
@@ -248,6 +248,86 @@ const handlers = [
 				],
 				total_pages: 86,
 				total_results: 1707,
+			})
+		);
+	}),
+	rest.get(`https://api.themoviedb.org/3/movie/455476`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				backdrop_path: "/oqP1qEZccq5AD9TVTIaO6IGUj7o.jpg",
+				genres: [
+					{
+						id: 14,
+						name: "Fantasy",
+					},
+					{
+						id: 28,
+						name: "Action",
+					},
+					{
+						id: 12,
+						name: "Adventure",
+					},
+				],
+				id: 455476,
+				original_title: "Knights of the Zodiac",
+				overview:
+					"When a headstrong street orphan, Seiya, in search of his abducted sister unwittingly taps into hidden powers, he discovers he might be the only person alive who can protect a reincarnated goddess, sent to watch over humanity. Can he let his past go and embrace his destiny to become a Knight of the Zodiac?",
+				poster_path: "/qW4crfED8mpNDadSmMdi7ZDzhXF.jpg",
+				release_date: "2023-04-27",
+				tagline: "Go beyond your destiny.",
+				vote_average: 6.523,
+				vote_count: 386,
+			})
+		);
+	}),
+	rest.get(`https://api.themoviedb.org/3/search/person`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				page: 1,
+				results: [
+					{
+						id: 1158,
+					},
+				],
+				total_pages: 1,
+				total_results: 13,
+			})
+		);
+	}),
+	rest.post(`https://api.themoviedb.org/3/account/${accountID}/favorite`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				success: true,
+				status_code: 1,
+				status_message: "Success.",
+			})
+		);
+	}),
+	rest.post(`https://api.themoviedb.org/3/account/${accountID}/watchlist`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				success: true,
+				status_code: 1,
+				status_message: "Success.",
+			})
+		);
+	}),
+	rest.post(`https://api.themoviedb.org/3/movie/455476/rating`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				success: true,
+				status_code: 1,
+				status_message: "Success.",
+			})
+		);
+	}),
+	rest.get("https://api.themoviedb.org/3/search/movie", (req, res, ctx) => {
+		return res(
+			ctx.json({
+				success: true,
+				status_code: 1,
+				status_message: "Success.",
 			})
 		);
 	}),

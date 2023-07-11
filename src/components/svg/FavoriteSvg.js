@@ -20,6 +20,7 @@ const FavoriteSvg = ({id}) => {
 			onClick={() => handleCollectionFavorite(id)}
 		>
 			<circle
+				data-testid="favoriteTest"
 				style={
 					favorite.includes(id) && !hover
 						? {fill: "#ff6a00", transition: "all .4s"}

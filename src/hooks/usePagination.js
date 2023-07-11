@@ -18,7 +18,6 @@ const usePagination = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		// dispatch(setMovies([...new Set([...movies, ...data])].slice(0, paginationSlice)));
 		dispatch(setMovies(data.slice(0, paginationSlice)));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, paginationSlice]);
@@ -26,14 +25,9 @@ const usePagination = () => {
 	function paginate() {
 		dispatch(setPaginationSlice());
 
-		if (data.length === movies.length || movies.length === 10) {
-			if (results === "complex") {
-				fetchNextPageSearchComplex();
-			}
-
-			if (results === "simple") {
-				fetchNextPageSearchSimple();
-			}
+		if (data.length === movies.length) {
+			fetchNextPageSearchComplex();
+			fetchNextPageSearchSimple();
 
 			if (results === "all") {
 				fetchNextPagePlaying();
