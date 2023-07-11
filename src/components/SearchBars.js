@@ -44,7 +44,7 @@ const SearchBars = ({isFetchingPlaying, isFetchingSearchComplex, isFetchingSearc
 				display={searched ? "block" : "none"}
 				onClick={() => clearData("all", refetchPlaying)}
 			>
-				Clear Search
+				Clear search
 			</Button>
 		</Box>
 	);

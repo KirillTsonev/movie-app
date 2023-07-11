@@ -47,7 +47,7 @@ const CollectionsFilters = ({setCurrentCollection, currentCollection, refetchCol
 				}
 				onClick={() => filterCollections("watchlist")}
 			>
-				Watchlsit
+				Watchlist
 			</Button>
 			<Button
 				w="30%"
