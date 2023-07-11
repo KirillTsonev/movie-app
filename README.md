@@ -1,6 +1,6 @@
 # Running the project locally
 
-1. Clone the branch to your computer either through GitLab's UI or using the `git clone` command in your preferred IDE.
+1. Clone the branch to your computer.
 2. Run the `npm install` command in the integrated terminal of your IDE to install all required dependencies.
 3. Make an account at the [TMDB](https://developer.themoviedb.org/docs)
 4. Navigate to **src/constants.js**, place your API Token in the **headers** object as follows: "Bearer **YOUR API TOKEN**"
