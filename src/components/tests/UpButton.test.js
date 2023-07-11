@@ -1,8 +1,7 @@
 import {screen} from "@testing-library/react";
 
-import {renderWithProviders} from "../../testUtils";
-
 import AllMoviesPage from "../../pages/AllMoviesPage";
+import {renderWithProviders} from "../../testUtils";
 
 describe("<ComplexBarSimple/>", () => {
 	test("renders the button but it's hidden", async () => {

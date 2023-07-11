@@ -1,9 +1,8 @@
-import {screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import {renderWithProviders} from "../../testUtils";
+import {screen} from "@testing-library/react";
 
 import AllMoviesPage from "../../pages/AllMoviesPage";
+import {renderWithProviders} from "../../testUtils";
 
 describe("<MovieCard/>", () => {
 	test("renders modal window with details on button click", async () => {

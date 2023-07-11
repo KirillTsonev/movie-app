@@ -6,9 +6,9 @@ import {setSimpleQueries, resetQueries} from "../redux/queriesSlice";
 import {setSearched} from "../redux/settingsSlice";
 
 const useHandleSimpleSearch = () => {
-	const {refetchSearchSimple} = useSearchBarSimple();
-
 	const dispatch = useDispatch();
+
+	const {refetchSearchSimple} = useSearchBarSimple();
 
 	async function handleSearch({e, titleState, setTitleState}) {
 		e.preventDefault();

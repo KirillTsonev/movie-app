@@ -7,7 +7,6 @@ import useSearchBarSimple from "../api/useSearchBarSimple";
 import useSearchBarComplex from "../api/useSearchBarComplex";
 import usePagination from "../hooks/usePagination";
 import useSelectors from "../redux/useSelectors";
-
 import NavBar from "../components/NavBar";
 import UpButton from "../components/UpButton";
 import AllMoviesDisplay from "../components/AllMoviesDisplay";
@@ -18,11 +17,7 @@ const AllMoviesPage = () => {
 	const {isFetchingSearchSimple, errorSearchSimple} = useSearchBarSimple();
 	const {isFetchingSearchComplex, errorSearchComplex} = useSearchBarComplex();
 	const {movies} = useSelectors();
-
 	const {paginate} = usePagination();
-
-	//tests
-	//readme and constants
 
 	return (
 		<Box

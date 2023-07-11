@@ -2,13 +2,15 @@ import {useState, useEffect} from "react";
 import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
+import useSelectors from "../redux/useSelectors";
 import {setData} from "../redux/homeSlice";
 import {headers} from "../constants";
 import {setTotalResults} from "../redux/settingsSlice";
-import useSelectors from "../redux/useSelectors";
 
 const useSearchBarSimple = () => {
 	const [titleState, setTitleState] = useState("");
+
+	const dispatch = useDispatch();
 
 	const {results, title} = useSelectors();
 	const {
@@ -28,12 +30,10 @@ const useSearchBarSimple = () => {
 		cacheTime: 0,
 	});
 
-	const dispatch = useDispatch();
-
 	useEffect(() => {
 		if (results === "simple" && dataSearchSimple) {
-			dispatch(setTotalResults(dataSearchSimple.pages[0].total_results));
-			dispatch(setData([...dataSearchSimple.pages.map((a) => a.results)].flat()));
+			dispatch(setTotalResults(dataSearchSimple));
+			dispatch(setData(dataSearchSimple));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSearchSimple]);

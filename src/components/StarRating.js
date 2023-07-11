@@ -3,7 +3,6 @@ import {Box} from "@chakra-ui/react";
 
 import useHandleRatings from "../api/useHandleRatings";
 import useSelectors from "../redux/useSelectors";
-
 import DeleteSvg from "./svg/DeleteSvg";
 
 const StarRating = ({id}) => {

@@ -7,9 +7,7 @@ import {Provider} from "react-redux";
 import AllMoviesPage from "../pages/AllMoviesPage";
 import CollectionsPage from "../pages/CollectionsPage";
 import Error404Page from "../pages/Error404Page";
-
 import theme from "../theme/theme";
-
 import {setupStore} from "../redux/store";
 
 function App() {

@@ -1,9 +1,8 @@
-import {screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import {renderWithProviders} from "../../testUtils";
+import {screen} from "@testing-library/react";
 
 import NavBar from "../NavBar";
+import {renderWithProviders} from "../../testUtils";
 
 describe("<NavBar/>", () => {
 	test("renders two links", () => {

@@ -1,9 +1,8 @@
-import {screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import {renderWithProviders} from "../../testUtils";
+import {screen} from "@testing-library/react";
 
 import SearchBarSimple from "../SearchBarSimple";
+import {renderWithProviders} from "../../testUtils";
 
 describe("<SearchBarSimple/>", () => {
 	test("renders the search bar", () => {

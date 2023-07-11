@@ -11,11 +11,11 @@ async function createComplexLink({year, cast, genres, num}) {
 	}
 
 	if (cast) {
-		const castForFetch = cast.split(",").map((a) => a.trim());
+		const castForFetch = cast.split(",").map((actor) => actor.trim());
 
 		let data = await Promise.all(
-			castForFetch.map(async (a) => {
-				return await fetchCast(a);
+			castForFetch.map(async (actor) => {
+				return await fetchCast(actor);
 			})
 		);
 

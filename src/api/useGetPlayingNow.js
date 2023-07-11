@@ -3,13 +3,16 @@ import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useLocation} from "react-router";
 
+import useClearData from "../hooks/useClearData";
+import useSelectors from "../redux/useSelectors";
 import {setData} from "../redux/homeSlice";
 import {headers} from "../constants";
 import {setTotalResults} from "../redux/settingsSlice";
-import useClearData from "../hooks/useClearData";
-import useSelectors from "../redux/useSelectors";
 
 const useGetPlayingNow = () => {
+	const dispatch = useDispatch();
+	const location = useLocation();
+
 	const {results} = useSelectors();
 	const {clearData} = useClearData();
 	const {
@@ -30,13 +33,10 @@ const useGetPlayingNow = () => {
 		cacheTime: 0,
 	});
 
-	const dispatch = useDispatch();
-	const location = useLocation();
-
 	useEffect(() => {
 		if (results === "all" && dataPlaying) {
-			dispatch(setData([...dataPlaying.pages.map((a) => a.results)].flat()));
-			dispatch(setTotalResults(dataPlaying.pages[0].total_results));
+			dispatch(setTotalResults(dataPlaying));
+			dispatch(setData(dataPlaying));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataPlaying]);

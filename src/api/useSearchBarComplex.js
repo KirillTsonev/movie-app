@@ -2,11 +2,11 @@ import {useState, useEffect} from "react";
 import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
+import useSelectors from "../redux/useSelectors";
+import createComplexLink from "./createComplexLink";
 import {setData} from "../redux/homeSlice";
 import {setTotalResults} from "../redux/settingsSlice";
 import {headers} from "../constants";
-import useSelectors from "../redux/useSelectors";
-import createComplexLink from "./createComplexLink";
 
 const useSearchBarComplex = () => {
 	const [yearState, setYearState] = useState("");
@@ -34,8 +34,8 @@ const useSearchBarComplex = () => {
 
 	useEffect(() => {
 		if (results === "complex" && dataSearchComplex) {
-			dispatch(setTotalResults(dataSearchComplex.pages[0].total_results));
-			dispatch(setData([...dataSearchComplex.pages.map((a) => a.results)].flat()));
+			dispatch(setTotalResults(dataSearchComplex));
+			dispatch(setData(dataSearchComplex));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSearchComplex]);

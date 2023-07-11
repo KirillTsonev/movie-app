@@ -14,9 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
-
 import ModalDetails from "./ModalDetails";
-
 import StarRating from "./StarRating";
 import FavoriteSvg from "./svg/FavoriteSvg";
 import RateSvg from "./svg/RateSvg";

@@ -2,7 +2,6 @@ import React from "react";
 import {Box, Button, Text} from "@chakra-ui/react";
 
 import useSelectors from "../redux/useSelectors";
-
 import MovieCard from "./MovieCard";
 
 const AllMoviesDisplay = ({isFetchingPlaying, isFetchingSearchComplex, isFetchingSearchSimple, paginate}) => {

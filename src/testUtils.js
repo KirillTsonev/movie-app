@@ -6,7 +6,6 @@ import {BrowserRouter} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
 
 import theme from "./theme/theme";
-
 import {setupStore} from "./redux/store";
 
 const queryClient = new QueryClient({

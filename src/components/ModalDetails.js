@@ -16,7 +16,6 @@ import {
 import {SpinnerRoundOutlined} from "spinners-react";
 
 import ModalDetailsContent from "./ModalDetailsContent";
-
 import useFetchDetails from "../api/useFetchDetails";
 import useSelectors from "../redux/useSelectors";
 

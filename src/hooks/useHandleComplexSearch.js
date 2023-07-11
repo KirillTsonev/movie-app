@@ -6,9 +6,9 @@ import {resetHomeState} from "../redux/homeSlice";
 import {setSearched} from "../redux/settingsSlice";
 
 const useHandleComplexSearch = ({setSelectedGenres, setChecks, checks}) => {
-	const {refetchSearchComplex} = useSearchBarComplex();
-
 	const dispatch = useDispatch();
+
+	const {refetchSearchComplex} = useSearchBarComplex();
 
 	async function handleSearch({e, selectedGenres, castState, yearState, setCastState, setYearState}) {
 		e.preventDefault();

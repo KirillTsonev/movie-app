@@ -14,7 +14,7 @@ const homeSlice = createSlice({
 			state.movies = action.payload;
 		},
 		setData(state, action) {
-			state.data = action.payload;
+			state.data = [...action.payload.pages.map((a) => a.results)].flat();
 		},
 		setPaginationSlice(state) {
 			state.paginationSlice = state.paginationSlice + 10;

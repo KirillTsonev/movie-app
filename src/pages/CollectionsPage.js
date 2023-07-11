@@ -5,7 +5,6 @@ import {SpinnerDotted} from "spinners-react";
 import useSelectors from "../redux/useSelectors";
 import usePagination from "../hooks/usePagination";
 import useFetchCollections from "../api/useFetchCollections";
-
 import NavBar from "../components/NavBar";
 import UpButton from "../components/UpButton";
 import CollectionsFilters from "../components/CollectionsFilters";
@@ -13,6 +12,7 @@ import CollectionsMoviesDisplay from "../components/CollectionsMoviesDisplay";
 
 const CollectionsPage = () => {
 	const {movies} = useSelectors();
+	const {paginate} = usePagination();
 	const {
 		errorCollections,
 		isFetchingCollections,
@@ -21,8 +21,6 @@ const CollectionsPage = () => {
 		refetchCollections,
 		isSuccessCollections,
 	} = useFetchCollections();
-
-	const {paginate} = usePagination();
 
 	return (
 		<Box

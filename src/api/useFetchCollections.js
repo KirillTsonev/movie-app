@@ -3,14 +3,17 @@ import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 import {useLocation} from "react-router";
 
-import {headers, accountID} from "../constants";
 import useSelectors from "../redux/useSelectors";
 import useClearData from "../hooks/useClearData";
+import {headers, accountID} from "../constants";
 import {setData} from "../redux/homeSlice";
 import {setTotalResults} from "../redux/settingsSlice";
 
 const useFetchCollections = () => {
 	const [currentCollection, setCurrentCollection] = useState("favorite");
+
+	const location = useLocation();
+	const dispatch = useDispatch();
 
 	const {results} = useSelectors();
 	const {clearData} = useClearData();
@@ -32,13 +35,10 @@ const useFetchCollections = () => {
 		cacheTime: 0,
 	});
 
-	const location = useLocation();
-	const dispatch = useDispatch();
-
 	useEffect(() => {
 		if (results === "collection" && dataCollections) {
-			dispatch(setTotalResults(dataCollections.pages[0].total_results));
-			dispatch(setData([...dataCollections.pages.map((a) => a.results)].flat()));
+			dispatch(setTotalResults(dataCollections));
+			dispatch(setData(dataCollections));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataCollections]);

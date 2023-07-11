@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 
 import useHandleRatings from "../../api/useHandleRatings";
 import useSelectors from "../../redux/useSelectors";
-
 import {setRated} from "../../redux/collectionsSlice";
 import {setTotalResults} from "../../redux/settingsSlice";
 import {setMovies} from "../../redux/homeSlice";

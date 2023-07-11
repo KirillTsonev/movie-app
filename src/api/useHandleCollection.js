@@ -1,12 +1,11 @@
 import {useMutation} from "react-query";
 import {useDispatch} from "react-redux";
 
-import {headers, accountID} from "../constants";
-import {setFavorite, setWatchList} from "../redux/collectionsSlice";
-
 import useSelectors from "../redux/useSelectors";
 import {setMovies} from "../redux/homeSlice";
 import {setTotalResults} from "../redux/settingsSlice";
+import {headers, accountID} from "../constants";
+import {setFavorite, setWatchList} from "../redux/collectionsSlice";
 
 const useHandleCollection = () => {
 	const dispatch = useDispatch();
@@ -34,7 +33,7 @@ const useHandleCollection = () => {
 	}
 
 	//If these functions are refactored to not repeat code, it would be one function which would take in 6 arguments so I left it as is
-	function handleCollectionFavorite(id) {
+	async function handleCollectionFavorite(id) {
 		if (favorite.includes(id)) {
 			addToCollection.mutate(
 				{id, key: "favorite", bool: false},

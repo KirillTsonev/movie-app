@@ -4,10 +4,8 @@ import {useDispatch} from "react-redux";
 
 import useClearData from "../hooks/useClearData";
 import useSelectors from "../redux/useSelectors";
-
 import SearchBarComplex from "./SearchBarComplex";
 import SearchBarSimple from "./SearchBarSimple";
-
 import {setComplexSearch} from "../redux/settingsSlice";
 
 const SearchBars = ({isFetchingPlaying, isFetchingSearchComplex, isFetchingSearchSimple, refetchPlaying}) => {

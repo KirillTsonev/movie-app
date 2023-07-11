@@ -7,6 +7,8 @@ const useCheckBoxes = () => {
 	const [selectedGenres, setSelectedGenres] = useState([]);
 	const [checks, setChecks] = useState([]);
 
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		const arr = [];
 
@@ -16,8 +18,6 @@ const useCheckBoxes = () => {
 
 		setChecks(arr);
 	}, []);
-
-	const dispatch = useDispatch();
 
 	function handleCheckGenre(e, index) {
 		if (e.target.checked) {

@@ -2,12 +2,13 @@ import {useEffect} from "react";
 import {useInfiniteQuery} from "react-query";
 import {useDispatch} from "react-redux";
 
+import useSelectors from "../redux/useSelectors";
 import {accountID, headers} from "../constants";
 import {setFavorite, setWatchList, setRated} from "../redux/collectionsSlice";
 
-import useSelectors from "../redux/useSelectors";
-
 const useFetchLists = () => {
+	const dispatch = useDispatch();
+
 	const {favorite, watchlist, rated} = useSelectors();
 	const {data: dataFavorite, fetchNextPage: fetchNextPageFavorite} = useInfiniteQuery({
 		queryKey: ["fetchFavorites", favorite],
@@ -33,8 +34,6 @@ const useFetchLists = () => {
 		},
 		enabled: false,
 	});
-
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dataFavorite?.pages.forEach((page) =>

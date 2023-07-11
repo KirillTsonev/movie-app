@@ -17,7 +17,7 @@ const settingsSlice = createSlice({
 			state.searched = action.payload;
 		},
 		setTotalResults(state, action) {
-			state.totalResults = action.payload;
+			state.totalResults = action.payload.pages[0].total_results;
 		},
 		resetSettings() {
 			return initialState;
