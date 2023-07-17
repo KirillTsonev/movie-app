@@ -13,7 +13,7 @@ const useListsLogic = () => {
 		useListsQuery();
 
 	useEffect(() => {
-		dataFavorite?.pages.forEach((page) =>
+		dataFavorite.pages.forEach((page) =>
 			dispatch(setFavorite([...new Set([...favorite, ...page.results.map((a) => a.id)])]))
 		);
 
@@ -24,10 +24,8 @@ const useListsLogic = () => {
 	}, [dataFavorite]);
 
 	useEffect(() => {
-		dataWatchlist?.pages.forEach((page) =>
-			dispatch(
-				setWatchList([...new Set([...rated, ...page.results.map((a) => (a = {id: a.id, rating: a.rating}))])])
-			)
+		dataWatchlist?.pages?.forEach((page) =>
+			dispatch(setWatchList([...new Set([...watchlist, ...page.results.map((a) => a.id)])]))
 		);
 
 		if (watchlist.length % 20 === 0) {
@@ -37,7 +35,7 @@ const useListsLogic = () => {
 	}, [dataWatchlist]);
 
 	useEffect(() => {
-		dataRated?.pages.forEach((page) => dispatch(setRated(page.results)));
+		dataRated?.pages?.forEach((page) => dispatch(setRated(page.results)));
 
 		if (rated.length % 20 === 0) {
 			fetchNextPageRated();
