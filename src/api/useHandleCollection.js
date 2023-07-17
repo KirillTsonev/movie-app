@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 
 import useSelectors from "../redux/useSelectors";
 import {setMovies} from "../redux/homeSlice";
-import {setTotalResults} from "../redux/settingsSlice";
+import {setResultsFilter} from "../redux/settingsSlice";
 import {headers, accountID} from "../constants";
 import {setFavorite, setWatchList} from "../redux/collectionsSlice";
 
@@ -117,7 +117,7 @@ const useHandleCollection = () => {
 
 	function filterLocally(id) {
 		dispatch(setMovies(movies.filter((a) => a.id !== id)));
-		dispatch(setTotalResults(movies.length - 1));
+		dispatch(setResultsFilter(movies.length - 1));
 	}
 
 	return {handleCollectionFavorite, handleCollectionWatchlist, addToCollection};

@@ -19,11 +19,14 @@ const settingsSlice = createSlice({
 		setTotalResults(state, action) {
 			state.totalResults = action.payload.pages[0].total_results;
 		},
+		setResultsFilter(state, action) {
+			state.totalResults = action.payload;
+		},
 		resetSettings() {
 			return initialState;
 		},
 	},
 });
 
-export const {setComplexSearch, setSearched, setTotalResults, resetSettings} = settingsSlice.actions;
+export const {setComplexSearch, setSearched, setTotalResults, resetSettings, setResultsFilter} = settingsSlice.actions;
 export default settingsSlice;
