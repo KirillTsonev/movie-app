@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 
-import useHandleRatings from "../../api/useHandleRatings";
+import useHandleRatings from "../../api/reactQueryHooks/useRatingsMutation";
 import useSelectors from "../../redux/useSelectors";
 import {setRated} from "../../redux/collectionsSlice";
 import {setTotalResults} from "../../redux/settingsSlice";

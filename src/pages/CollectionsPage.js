@@ -4,7 +4,7 @@ import {SpinnerDotted} from "spinners-react";
 
 import useSelectors from "../redux/useSelectors";
 import usePagination from "../hooks/usePagination";
-import useFetchCollections from "../api/useFetchCollections";
+import useFetchCollections from "../api/statefulLogicHooks/useCollectionsLogic";
 import NavBar from "../components/NavBar";
 import UpButton from "../components/UpButton";
 import CollectionsFilters from "../components/CollectionsFilters";

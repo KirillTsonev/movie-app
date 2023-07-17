@@ -16,7 +16,7 @@ import {
 import {SpinnerRoundOutlined} from "spinners-react";
 
 import ModalDetailsContent from "./ModalDetailsContent";
-import useFetchDetails from "../api/useFetchDetails";
+import useDetailsLogic from "../api/statefulLogicHooks/useDetailsLogic";
 import useSelectors from "../redux/useSelectors";
 
 const Background = ({variant, ...rest}) => {
@@ -27,7 +27,7 @@ const Background = ({variant, ...rest}) => {
 
 const ModalDetails = ({id}) => {
 	const {isOpen, onOpen, onClose} = useDisclosure();
-	const {setId, isFetchingDetails} = useFetchDetails();
+	const {setId, isFetchingDetails} = useDetailsLogic();
 	const {details} = useSelectors();
 
 	return (

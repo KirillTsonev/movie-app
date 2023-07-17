@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 import useSelectors from "../../redux/useSelectors";
-import useHandleCollection from "../../api/useHandleCollection";
+import useHandleCollection from "../../api/reactQueryHooks/useCollectionsMutation";
 
 const FavoriteSvg = ({id}) => {
 	const [hover, setHover] = useState(false);

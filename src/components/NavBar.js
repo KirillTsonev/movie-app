@@ -3,10 +3,10 @@ import {NavLink} from "react-router-dom";
 import {Box, Button} from "@chakra-ui/react";
 
 import ThemeSwitch from "./ThemeSwitch";
-import useFetchLists from "../api/useFetchLists";
+import useListsLogic from "../api/statefulLogicHooks/useListsLogic";
 
 const NavBar = () => {
-	useFetchLists();
+	useListsLogic();
 
 	return (
 		<Box

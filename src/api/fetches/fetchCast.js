@@ -1,4 +1,4 @@
-import {headers} from "../constants";
+import {headers} from "../../constants";
 
 async function fetchCast(actor) {
 	const options = {

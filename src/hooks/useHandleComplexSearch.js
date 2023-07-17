@@ -1,6 +1,6 @@
 import {useDispatch} from "react-redux";
 
-import useSearchBarComplex from "../api/useSearchBarComplex";
+import useSearchBarComplex from "../api/statefulLogicHooks/useSearchComplexLogic";
 import {resetQueries, setComplexQueries} from "../redux/queriesSlice";
 import {resetHomeState} from "../redux/homeSlice";
 import {setSearched} from "../redux/settingsSlice";

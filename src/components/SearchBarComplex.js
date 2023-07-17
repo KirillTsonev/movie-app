@@ -14,14 +14,14 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 
-import useFetchGenres from "../api/useFetchGenres";
+import useGenresQuery from "../api/reactQueryHooks/useGenresQuery";
 import useCheckBoxes from "../hooks/useCheckBoxes";
-import useSearchBarComplex from "../api/useSearchBarComplex";
+import useSearchBarComplex from "../api/statefulLogicHooks/useSearchComplexLogic";
 import useSelectors from "../redux/useSelectors";
 import useHandleComplexSearch from "../hooks/useHandleComplexSearch";
 
 const SearchBarComplex = ({isFetchingPlaying, isFetchingSearchComplex}) => {
-	const {dataGenres} = useFetchGenres();
+	const {dataGenres} = useGenresQuery();
 	const {castState, yearState, setCastState, setYearState} = useSearchBarComplex();
 	const {selectedGenres, checks, handleCheckGenre, setChecks, setSelectedGenres} = useCheckBoxes();
 	const {onOpen} = useDisclosure();

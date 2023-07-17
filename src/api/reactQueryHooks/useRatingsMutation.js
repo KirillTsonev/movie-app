@@ -2,10 +2,10 @@ import {useState} from "react";
 import {useMutation} from "react-query";
 import {useDispatch} from "react-redux";
 
-import useHandleCollection from "./useHandleCollection";
-import useSelectors from "../redux/useSelectors";
-import {headers} from "../constants";
-import {setRated, setWatchList} from "../redux/collectionsSlice";
+import useHandleCollection from "./useCollectionsMutation";
+import useSelectors from "../../redux/useSelectors";
+import postRating from "../fetches/fetchRatingsPost";
+import {setRated, setWatchList} from "../../redux/collectionsSlice";
 
 const useHandleRatings = () => {
 	const [rating, setRating] = useState(0);
@@ -17,19 +17,6 @@ const useHandleRatings = () => {
 
 	const {watchlist, rated} = useSelectors();
 	const {addToCollection} = useHandleCollection();
-
-	async function postRating({id, value, method}) {
-		const options = {
-			method,
-			headers: {
-				...headers,
-				"Content-Type": "application/json;charset=utf-8",
-			},
-			body: JSON.stringify({value}),
-		};
-
-		fetch(`https://api.themoviedb.org/3/movie/${id}/rating`, options).then((response) => response.json());
-	}
 
 	function handleRating({id, value, method}) {
 		setRating(value);

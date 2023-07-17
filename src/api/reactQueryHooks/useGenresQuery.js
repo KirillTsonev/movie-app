@@ -1,9 +1,9 @@
 import {useEffect} from "react";
 import {useQuery} from "react-query";
 
-import {headers} from "../constants";
+import fetchGenres from "../fetches/fetchGenres";
 
-const useFetchGenres = () => {
+const useGenresQuery = () => {
 	const {data: dataGenres, refetch: refetchGenres} = useQuery({
 		queryKey: ["fetchGenres"],
 		queryFn: () => fetchGenres(),
@@ -15,16 +15,7 @@ const useFetchGenres = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	async function fetchGenres() {
-		const options = {
-			method: "GET",
-			headers,
-		};
-
-		return fetch(`https://api.themoviedb.org/3/genre/movie/list?language=en`, options).then((res) => res.json());
-	}
-
-	return {dataGenres};
+	return {dataGenres, refetchGenres};
 };
 
-export default useFetchGenres;
+export default useGenresQuery;

@@ -1,6 +1,6 @@
 import fetchCast from "./fetchCast";
 
-async function createComplexLink({year, cast, genres, num}) {
+async function helperComplexLink({year, cast, genres, num}) {
 	let link =
 		"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=" + num;
 
@@ -29,4 +29,4 @@ async function createComplexLink({year, cast, genres, num}) {
 	return link;
 }
 
-export default createComplexLink;
+export default helperComplexLink;

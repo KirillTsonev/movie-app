@@ -1,11 +1,11 @@
 import {useMutation} from "react-query";
 import {useDispatch} from "react-redux";
 
-import useSelectors from "../redux/useSelectors";
-import {setMovies} from "../redux/homeSlice";
-import {setResultsFilter} from "../redux/settingsSlice";
-import {headers, accountID} from "../constants";
-import {setFavorite, setWatchList} from "../redux/collectionsSlice";
+import useSelectors from "../../redux/useSelectors";
+import postToCollection from "../fetches/fetchPostCollection";
+import {setMovies} from "../../redux/homeSlice";
+import {setResultsFilter} from "../../redux/settingsSlice";
+import {setFavorite, setWatchList} from "../../redux/collectionsSlice";
 
 const useHandleCollection = () => {
 	const dispatch = useDispatch();
@@ -14,23 +14,6 @@ const useHandleCollection = () => {
 	});
 
 	const {favorite, watchlist, movies, results} = useSelectors();
-
-	async function postToCollection({id, key, bool}) {
-		const options = {
-			method: "POST",
-			headers: {
-				...headers,
-				"content-type": "application/json",
-			},
-			body: JSON.stringify({
-				media_type: "movie",
-				media_id: id,
-				[key]: bool,
-			}),
-		};
-
-		return fetch(`https://api.themoviedb.org/3/account/${accountID}/${key}`, options).then((res) => res.json());
-	}
 
 	//If these functions are refactored to not repeat code, it would be one function which would take in 6 arguments so I left it as is
 	async function handleCollectionFavorite(id) {

@@ -2,9 +2,9 @@ import React from "react";
 import {Box, Text} from "@chakra-ui/react";
 import {SpinnerDotted} from "spinners-react";
 
-import useGetPlayingNow from "../api/useGetPlayingNow";
-import useSearchBarSimple from "../api/useSearchBarSimple";
-import useSearchBarComplex from "../api/useSearchBarComplex";
+import usePlayingNowLogic from "../api/statefulLogicHooks/usePlayingNowLogic";
+import useSearchSimpleLogic from "../api/statefulLogicHooks/useSearchSimpleLogic";
+import useSearchComplexLogic from "../api/statefulLogicHooks/useSearchComplexLogic";
 import usePagination from "../hooks/usePagination";
 import useSelectors from "../redux/useSelectors";
 import NavBar from "../components/NavBar";
@@ -13,9 +13,9 @@ import AllMoviesDisplay from "../components/AllMoviesDisplay";
 import SearchBars from "../components/SearchBars";
 
 const AllMoviesPage = () => {
-	const {isFetchingPlaying, errorPlaying, refetchPlaying, isSuccessPlaying} = useGetPlayingNow();
-	const {isFetchingSearchSimple, errorSearchSimple} = useSearchBarSimple();
-	const {isFetchingSearchComplex, errorSearchComplex} = useSearchBarComplex();
+	const {isFetchingPlaying, errorPlaying, refetchPlaying, isSuccessPlaying} = usePlayingNowLogic();
+	const {isFetchingSearchSimple, errorSearchSimple} = useSearchSimpleLogic();
+	const {isFetchingSearchComplex, errorSearchComplex} = useSearchComplexLogic();
 	const {movies} = useSelectors();
 	const {paginate} = usePagination();
 

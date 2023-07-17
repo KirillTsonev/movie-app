@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Box} from "@chakra-ui/react";
 
-import useHandleRatings from "../api/useHandleRatings";
+import useHandleRatings from "../api/reactQueryHooks/useRatingsMutation";
 import useSelectors from "../redux/useSelectors";
 import DeleteSvg from "./svg/DeleteSvg";
 

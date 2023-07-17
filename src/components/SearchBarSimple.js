@@ -1,7 +1,7 @@
 import React from "react";
 import {Input, Button, Box} from "@chakra-ui/react";
 
-import useSearchBarSimple from "../api/useSearchBarSimple";
+import useSearchBarSimple from "../api/statefulLogicHooks/useSearchSimpleLogic";
 import useHandleSimpleSearch from "../hooks/useHandleSimpleSearch";
 import useSelectors from "../redux/useSelectors";
 
