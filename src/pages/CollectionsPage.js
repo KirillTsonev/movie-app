@@ -40,7 +40,7 @@ const CollectionsPage = () => {
 					justifyContent="center"
 					pt="20px"
 				>
-					<SpinnerDotted size={"50%"} />
+					<SpinnerDotted size={"35%"} />
 				</Box>
 			) : errorCollections ? (
 				<Text
