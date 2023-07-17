@@ -11,6 +11,7 @@ import {
 	PopoverTrigger,
 	PopoverBody,
 	PopoverContent,
+	Tooltip,
 } from "@chakra-ui/react";
 
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
@@ -79,16 +80,21 @@ const MovieCard = ({movie, index}) => {
 					<Popover>
 						{/* I tried using the chakra forwardRef to turn the RateSvg into a button but encountered weird behavior with the animation */}
 						<PopoverTrigger>
-							<Button
-								w="60px"
-								h="60px"
-								borderRadius="100%"
-								p="0"
-								m="0"
-								variant="link"
+							<Tooltip
+								hasArrow
+								label="Rate movie"
 							>
-								<RateSvg id={movie.id} />
-							</Button>
+								<Button
+									w="60px"
+									h="60px"
+									borderRadius="100%"
+									p="0"
+									m="0"
+									variant="link"
+								>
+									<RateSvg id={movie.id} />
+								</Button>
+							</Tooltip>
 						</PopoverTrigger>
 						<PopoverContent w="270px">
 							<PopoverArrow />
