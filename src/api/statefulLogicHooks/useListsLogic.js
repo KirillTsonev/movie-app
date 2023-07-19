@@ -13,7 +13,7 @@ const useListsLogic = () => {
 		useListsQuery();
 
 	useEffect(() => {
-		dataFavorite.pages.forEach((page) =>
+		dataFavorite?.pages.forEach((page) =>
 			dispatch(setFavorite([...new Set([...favorite, ...page.results.map((a) => a.id)])]))
 		);
 
