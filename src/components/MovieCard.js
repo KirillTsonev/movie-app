@@ -80,21 +80,16 @@ const MovieCard = ({movie, index}) => {
 					<Popover>
 						{/* I tried using the chakra forwardRef to turn the RateSvg into a button but encountered weird behavior with the animation */}
 						<PopoverTrigger>
-							<Tooltip
-								hasArrow
-								label="Rate movie"
+							<Button
+								w="60px"
+								h="60px"
+								borderRadius="100%"
+								p="0"
+								m="0"
+								variant="link"
 							>
-								<Button
-									w="60px"
-									h="60px"
-									borderRadius="100%"
-									p="0"
-									m="0"
-									variant="link"
-								>
-									<RateSvg id={movie.id} />
-								</Button>
-							</Tooltip>
+								<RateSvg id={movie.id} />
+							</Button>
 						</PopoverTrigger>
 						<PopoverContent w="270px">
 							<PopoverArrow />
