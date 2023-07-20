@@ -11,7 +11,6 @@ import {
 	PopoverTrigger,
 	PopoverBody,
 	PopoverContent,
-	Tooltip,
 } from "@chakra-ui/react";
 
 import img404Thumbnail from "../assets/img404Thumbnail.jpg";
