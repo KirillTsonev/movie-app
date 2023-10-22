@@ -32,10 +32,10 @@ const MovieCard = ({movie, index}) => {
 		<ScaleFade
 			in={isOpen}
 			initialScale={0.7}
-			style={
+			transition={
 				index < 10
-					? {transition: `all ${0.3 + index * 0.1}s`}
-					: {transition: `all ${0.3 + (index - `${index.toString()[0]}0`) * 0.1}s`}
+					? {enter: {duration: 0.3 + index * 0.1}}
+					: {enter: {duration: 0.3 + (index - `${index.toString()[0]}0`) * 0.1}}
 			}
 		>
 			<Box
